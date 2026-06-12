@@ -19,21 +19,20 @@ public class SearchEngine {
         if (key == null) {
             return 0;
         }
-        // 1. Tự tính mã hash bằng thuật toán Polynomial Rolling Hash (giống
-        // String.hashCode của Java)
+        // 1. Tự tính mã hash bằng thuật toán Polynomial Rolling Hash
         int hashCode = 0;
         for (int i = 0; i < key.length(); i++) {
             hashCode = 31 * hashCode + key.charAt(i);
         }
-        // 2. Tự ép về số dương (không dùng Math.abs)
-        int absHashCode = hashCode;
+
+        // 2. Ép về số dương sử dụng Math.abs
+        int absHashCode = Math.abs(hashCode);
         if (absHashCode < 0) {
-            if (absHashCode == Integer.MIN_VALUE) {
-                absHashCode = Integer.MAX_VALUE; // Tránh tràn số khi đổi dấu của số âm nhỏ nhất
-            } else {
-                absHashCode = -absHashCode;
-            }
+            // Xử lý trường hợp đặc biệt Integer.MIN_VALUE (vì Math.abs của số này vẫn ra số
+            // âm)
+            absHashCode = Integer.MAX_VALUE;
         }
+
         // 3. Lấy phần dư trong giới hạn mảng (Index)
         return absHashCode % capacity;
     }
