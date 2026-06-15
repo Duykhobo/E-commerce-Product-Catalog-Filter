@@ -45,9 +45,27 @@ public class PriceEngine {
         }
     }
 
-    // TODO (Nguyễn Thanh Duy): Đọc hiểu và tinh chỉnh logic Duyệt cây (In-Order) để
-    // lọc giá
+    // TODO (Nguyễn Thanh Duy): Đọc hiểu và tinh chỉnh logic Duyệt cây (In-Order) để lọc giá
     public void searchByPriceRange(TreeNode<Product> node, double min, double max, List<Product> result) {
+        if (node == null) {
+            return;
+        }
 
+        double currentPrice = node.getData().getPrice();
+
+        // 1. Duyệt nhánh trái nếu có khả năng chứa giá trị >= min
+        if (currentPrice > min) {
+            searchByPriceRange(node.getLeft(), min, max, result);
+        }
+
+        // 2. Thêm vào kết quả nếu thoả mãn điều kiện
+        if (currentPrice >= min && currentPrice <= max) {
+            result.add(node.getData());
+        }
+
+        // 3. Duyệt nhánh phải nếu có khả năng chứa giá trị <= max
+        if (currentPrice <= max) {
+            searchByPriceRange(node.getRight(), min, max, result);
+        }
     }
 }

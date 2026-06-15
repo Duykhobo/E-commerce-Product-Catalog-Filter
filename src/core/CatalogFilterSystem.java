@@ -18,8 +18,8 @@ public class CatalogFilterSystem {
     // TODO (Toàn nhóm): Triển khai thêm Product vào toàn bộ hệ thống
     public void addProduct(Product p) {
         // Gọi hàm của 2 engine để thêm dữ liệu đồng thời
-        // priceEngine.insertProduct(p);
-        // searchEngine.put(p.getId(), p);
+        priceEngine.insertProduct(p);
+        searchEngine.put(p.getId(), p);
     }
 
     // Hàm gọi chức năng lọc giá

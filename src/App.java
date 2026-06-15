@@ -13,10 +13,16 @@ public class App {
         Product p3 = new Product("P003", "sony headphones", 350.0, 4.7);
         
         // TODO: Sinh viên hoàn thiện các cấu trúc trước rồi bỏ comment để test
-        // system.addProduct(p1);
-        // system.addProduct(p2);
-        // system.addProduct(p3);
+        system.addProduct(p1);
+        system.addProduct(p2);
+        system.addProduct(p3);
         
-        System.out.println("Vui lòng hoàn thiện mã nguồn các Engine.");
+        System.out.println("Đã thêm sản phẩm thành công!");
+        
+        // Test tính năng lọc giá (từ 1000 đến 2000)
+        System.out.println("\n--- Các sản phẩm có giá từ 1000 đến 2000 ---");
+        for (Product p : system.filterByPrice(1000, 2000)) {
+            System.out.println(p);
+        }
     }
 }
