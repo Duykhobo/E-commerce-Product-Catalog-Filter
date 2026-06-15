@@ -14,6 +14,7 @@ public class SearchEngine {
         this.hashTable = newTable;
     }
 
+    // TODO (Nguyễn Ngọc Minh Tân): Viết hàm tính Hash Index từ String key
     public int getBucketIndex(String key) {
         if (key == null) {
             return 0;
