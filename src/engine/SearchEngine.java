@@ -86,10 +86,38 @@ public class SearchEngine {
     }
 
     // TODO (Nguyễn Ngọc Minh Tân): Triển khai thuật toán chèn tên sản phẩm vào cây Trie
-    public void insertToTrie(String name, Product product) {
-        // Gợi ý: Duyệt qua từng ký tự của chuỗi name, chuyển thành chỉ số mảng (0-255).
-        // Nếu children[index] == null thì khởi tạo TrieNode mới.
-        // Cuối từ thì đánh dấu isEndOfWord = true và thêm product vào danh sách kết quả.
+public void insertToTrie(String name, Product product) {
+    name = name.toLowerCase();
+        if (name == null || name.isEmpty()) {
+            return;
+        }
+        
+        TrieNode current = this.trieRoot;
+        
+        // 1. Duyệt qua từng ký tự của chuỗi name
+        for (int i = 0; i < name.length(); i++) {
+            char c = name.charAt(i);
+            
+            // Chuyển ký tự thành chỉ số mảng (0-255)
+            int index = (int) c;
+            
+            // Đảm bảo chỉ số nằm trong khoảng hợp lệ từ 0 đến 255 (ASCII) để tránh lỗi tràn mảng
+            if (index < 0 || index >= 256) {
+                continue; 
+            }
+            
+            // 2. Nếu children[index] == null thì khởi tạo TrieNode mới
+            if (current.children[index] == null) {
+                current.children[index] = new TrieNode();
+            }
+            
+            // Di chuyển node hiện tại xuống node con tiếp theo
+            current = current.children[index];
+        }
+        
+        // 3. Cuối từ thì đánh dấu isEndOfWord = true và thêm product vào danh sách kết quả
+        current.isEndOfWord = true;
+        current.products.add(product);
     }
 
     // TODO (Phan Khánh Duy): Triển khai thuật toán duyệt cây Trie để lấy các sản phẩm khớp với tiền tố (Prefix Search)
