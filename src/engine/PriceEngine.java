@@ -1,6 +1,6 @@
 package engine;
 
-import java.util.List;
+import datastructure.list.ProductLinkedList;
 
 import datastructure.tree.TreeNode;
 import entity.Product;
@@ -45,8 +45,8 @@ public class PriceEngine {
         }
     }
 
-    // TODO (Nguyễn Thanh Duy): Đọc hiểu và tinh chỉnh logic Duyệt cây (In-Order) để lọc giá
-    public void searchByPriceRange(TreeNode<Product> node, double min, double max, List<Product> result) {
+    // Đã hoàn thành: Đọc hiểu và tinh chỉnh logic Duyệt cây (In-Order) để lọc giá
+    public void searchByPriceRange(TreeNode<Product> node, double min, double max, ProductLinkedList result) {
         if (node == null) {
             return;
         }

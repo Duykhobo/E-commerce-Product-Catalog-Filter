@@ -1,20 +1,26 @@
 package engine;
 
 import datastructure.hash.HashNode;
+import datastructure.trie.TrieNode;
 import entity.Product;
+import datastructure.list.ProductLinkedList;
 
 public class SearchEngine {
     public HashNode<String, Product>[] hashTable;
     public int capacity;
+    
+    // Gốc của cây Trie
+    public TrieNode trieRoot;
 
     public SearchEngine(int tableCapacity) {
         this.capacity = tableCapacity;
         @SuppressWarnings("unchecked")
         HashNode<String, Product>[] newTable = (HashNode<String, Product>[]) new HashNode[tableCapacity];
         this.hashTable = newTable;
+        this.trieRoot = new TrieNode();
     }
 
-    // TODO (Nguyễn Ngọc Minh Tân): Viết hàm tính Hash Index từ String key
+    // Đã hoàn thành: Hàm tính Hash Index từ String key
     public int getBucketIndex(String key) {
         if (key == null) {
             return 0;
@@ -77,5 +83,21 @@ public class SearchEngine {
             current = current.next;
         }
         return null;
+    }
+
+    // TODO (Nguyễn Ngọc Minh Tân): Triển khai thuật toán chèn tên sản phẩm vào cây Trie
+    public void insertToTrie(String name, Product product) {
+        // Gợi ý: Duyệt qua từng ký tự của chuỗi name, chuyển thành chỉ số mảng (0-255).
+        // Nếu children[index] == null thì khởi tạo TrieNode mới.
+        // Cuối từ thì đánh dấu isEndOfWord = true và thêm product vào danh sách kết quả.
+    }
+
+    // TODO (Phan Khánh Duy): Triển khai thuật toán duyệt cây Trie để lấy các sản phẩm khớp với tiền tố (Prefix Search)
+    public ProductLinkedList searchByPrefix(String prefix) {
+        ProductLinkedList result = new ProductLinkedList();
+        // Gợi ý: Lội qua cây Trie theo chuỗi prefix. Nếu đứt gánh giữa đường -> return rỗng.
+        // Nếu đến được điểm kết thúc của prefix, gọi hàm đệ quy hoặc vòng lặp gom tất cả sản phẩm
+        // nằm trong toàn bộ các nhánh con bên dưới node hiện tại vào biến result.
+        return result;
     }
 }
