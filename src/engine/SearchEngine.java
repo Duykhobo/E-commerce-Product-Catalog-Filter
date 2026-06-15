@@ -14,15 +14,33 @@ public class SearchEngine {
         this.hashTable = newTable;
     }
 
-    // TODO (Nguyễn Ngọc Minh Tân): Viết hàm tính Hash Index từ String key
     public int getBucketIndex(String key) {
-        // Gợi ý: dùng Math.abs(key.hashCode()) % capacity
-        return 0;
+        return Math.abs(key.hashCode()) % capacity;
     }
 
-    // TODO (Phan Khánh Duy): Viết thuật toán chèn Product vào hashTable và xử lý đụng độ (Chaining)
+    // Chèn Product vào hashTable với xử lý đụng độ bằng chaining
     public void put(String key, Product product) {
-        // ...
+        int index = getBucketIndex(key);
+        //kiểm tra toàn bộ mảng, nếu trống => tạo node mới 
+        if(hashTable[index] == null) {
+            hashTable[index] = new HashNode<>(key, product);
+        } else {
+            HashNode<String, Product> current = hashTable[index];
+            //nếu xảy ra va chạm, dùng một vòng lặp để duyệt qua các node trong bucket đó
+            while (current != null) {
+                //trong khi duyệt nếu tìm thấy node nào key trùng với key cần chèn thì ghi đè sản phẩm
+                if (current.key.equals(key)) {
+                    current.value = product; // Cập nhật giá trị nếu key đã tồn tại
+                    return;
+                }
+                //nếu duyệt đến node cuối mà không thấy key trùng với ID thì tạo hashNode mới và thêm vào cuối danh sách liên kết
+                if (current.next == null) {
+                    current.next = new HashNode<>(key, product);
+                    return;
+                }
+                current = current.next;
+            }
+        }
     }
 
     // Snippet đã cung cấp trong báo cáo
