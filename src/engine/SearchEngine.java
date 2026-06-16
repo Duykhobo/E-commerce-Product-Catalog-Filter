@@ -3,6 +3,7 @@ package engine;
 import java.util.*;
 
 import datastructure.hash.HashNode;
+import datastructure.list.ProductLinkedList;
 import datastructure.list.ProductNode;
 import datastructure.trie.TrieNode;
 import entity.Product;
@@ -45,7 +46,8 @@ public class SearchEngine {
     // TODO (Phan Khánh Duy): Viết thuật toán chèn Product vào hashTable và xử lý
     // đụng độ (Chaining)
     public void put(String key, Product product) {
-
+        if (key == null || product == null)
+            return;
         int index = getBucketIndex(key);
 
         // bucket đang trống thì tạo node đầu tiên
@@ -74,34 +76,35 @@ public class SearchEngine {
         }
     }
 
-    // TODO (Nguyễn Ngọc Minh Tân): Triển khai thuật toán chèn tên sản phẩm vào cây Trie
+    // TODO (Nguyễn Ngọc Minh Tân): Triển khai thuật toán chèn tên sản phẩm vào cây
+    // Trie
     public void insertToTrie(String name, Product product) {
-        if(name==null||name.isEmpty()||product==null){
+        if (name == null || name.isEmpty() || product == null) {
             return;
         }
-        name=name.toLowerCase();
-        int validCharCount=0;
-        TrieNode current= this.trieRoot;
-        for(int i=0;i<name.length();i++){
-            char c=name.charAt(i);
-            int index =(int) c;
-            if(index>=256){
+        name = name.toLowerCase();
+        int validCharCount = 0;
+        TrieNode current = this.trieRoot;
+        for (int i = 0; i < name.length(); i++) {
+            char c = name.charAt(i);
+            int index = (int) c;
+            if (index >= 256) {
                 continue;
             }
-            if(current.children[index]==null){
-                current.children[index]=new TrieNode();
+            if (current.children[index] == null) {
+                current.children[index] = new TrieNode();
             }
-            current=current.children[index];
+            current = current.children[index];
             validCharCount++;
         }
-        if(validCharCount>0){
-            current.isEndOfWord=true;
+        if (validCharCount > 0) {
+            current.isEndOfWord = true;
             current.products.add(product);
         }
     }
 
-    public List<Product> searchByPrefix(String prefix) {
-        List<Product> result = new ArrayList<>();
+    public ProductLinkedList searchByPrefix(String prefix) {
+        ProductLinkedList result = new ProductLinkedList();
 
         if (prefix == null) {
             return result; // prefix null => không có kết quả
@@ -115,6 +118,10 @@ public class SearchEngine {
             char c = prefix.charAt(i);
             int index = (int) c; // chuyển ký tự thành chỉ số trong mảng con
 
+            if (index >= 256) {
+                continue;
+            }
+            
             if (current.children[index] == null) {
                 return result; // nếu nhánh không tồn tại thì không tìm được prefix
             }
@@ -127,7 +134,7 @@ public class SearchEngine {
         return result; // trả về danh sách các sản phẩm khớp prefix
     }
 
-    private void collectProducts(TrieNode node, List<Product> result) {
+    private void collectProducts(TrieNode node, ProductLinkedList result) {
         if (node == null) {
             return; // nếu nút null thì không còn gì để duyệt
         }
