@@ -24,12 +24,47 @@ public class RatingSorter {
         heap[j] = temp;
     }
 
+    //hàm phụ trợ nếu đã max capacity muốn mở rộng thêm
+    private void resize(){
+        this.capacity = this.capacity * 2;
+        Product[] newHeap = new Product[this.capacity];
+
+        for(int i = 0 ; i < this.size; i++){
+            newHeap[i] = heap[i];
+        }
+        this.heap = newHeap;
+    }
+
+
+
+
     // TODO (Trịnh Lê Thiên Quân): Viết hàm thêm sản phẩm vào mảng và thực hiện Heapify Up (chìm lên) dựa theo Rating
     public void insert(Product product) {
-        // 1. Kiểm tra mảng đầy
-        // 2. Thêm vào cuối mảng (vị trí size)
-        // 3. Tăng size
-        // 4. Gọi đệ quy hoặc vòng lặp để đưa phần tử lên đúng vị trí (Heapify Up)
+        // kiểm tra null
+        if(product == null){
+            return;
+        }
+        // Kiểm tra mảng đầy
+        if (size == capacity) {
+            resize();
+        }
+        
+        //Thêm vào cuối mảng và tăng size
+        heap[size] = product;
+        int currentIdx = size;
+        size++;
+        
+        // Heapify Up
+        while (currentIdx > 0) {
+            int parentIdx = parent(currentIdx);
+            
+            if (heap[currentIdx].getRating() > heap[parentIdx].getRating()) {
+                swap(currentIdx, parentIdx);
+                currentIdx = parentIdx;
+            } else {
+                break;
+            }
+        }
     }
 
     // TODO (Nguyễn Thanh Duy): Viết hàm trích xuất sản phẩm có Rating cao nhất (Extract Max) và Heapify Down
