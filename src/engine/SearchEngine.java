@@ -3,11 +3,14 @@ package engine;
 import java.util.*;
 
 import datastructure.hash.HashNode;
+import datastructure.list.ProductNode;
+import datastructure.trie.TrieNode;
 import entity.Product;
 
 public class SearchEngine {
     public HashNode<String, Product>[] hashTable;
     public int capacity;
+    public TrieNode trieRoot;
 
     public SearchEngine(int tableCapacity) {
         this.capacity = tableCapacity;
@@ -71,6 +74,32 @@ public class SearchEngine {
         }
     }
 
+    // TODO (Nguyễn Ngọc Minh Tân): Triển khai thuật toán chèn tên sản phẩm vào cây Trie
+    public void insertToTrie(String name, Product product) {
+        if(name==null||name.isEmpty()||product==null){
+            return;
+        }
+        name=name.toLowerCase();
+        int validCharCount=0;
+        TrieNode current= this.trieRoot;
+        for(int i=0;i<name.length();i++){
+            char c=name.charAt(i);
+            int index =(int) c;
+            if(index>=256){
+                continue;
+            }
+            if(current.children[index]==null){
+                current.children[index]=new TrieNode();
+            }
+            current=current.children[index];
+            validCharCount++;
+        }
+        if(validCharCount>0){
+            current.isEndOfWord=true;
+            current.products.add(product);
+        }
+    }
+
     public List<Product> searchByPrefix(String prefix) {
         List<Product> result = new ArrayList<>();
 
@@ -104,8 +133,10 @@ public class SearchEngine {
         }
 
         if (node.isEndOfWord) {
-            for (Product p : node.products) {
-                result.add(p); // nếu đây là kết thúc từ, thêm sản phẩm vào kết quả
+            ProductNode current = node.products.head;
+            while (current != null) {
+                result.add(current.data); // thêm sản phẩm vào kết quả
+                current = current.next; // đi tiếp đến sản phẩm tiếp theo trong danh sách
             }
         }
 
