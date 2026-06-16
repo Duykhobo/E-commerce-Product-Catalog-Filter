@@ -1,5 +1,7 @@
 package engine;
 
+import java.util.*;
+
 import datastructure.hash.HashNode;
 import entity.Product;
 
@@ -40,12 +42,16 @@ public class SearchEngine {
     // TODO (Phan Khánh Duy): Viết thuật toán chèn Product vào hashTable và xử lý
     // đụng độ (Chaining)
     public void put(String key, Product product) {
+
         int index = getBucketIndex(key);
-        // kiểm tra toàn bộ mảng, nếu trống => tạo node mới
+
+        // bucket đang trống thì tạo node đầu tiên
         if (hashTable[index] == null) {
             hashTable[index] = new HashNode<>(key, product);
         } else {
+            // bucket đã có node thì duyệt linked list tại bucket đó
             HashNode<String, Product> current = hashTable[index];
+
             // nếu xảy ra va chạm, dùng một vòng lặp để duyệt qua các node trong bucket đó
             while (current != null) {
                 // trong khi duyệt nếu tìm thấy node nào key trùng với key cần chèn thì ghi đè
@@ -61,6 +67,51 @@ public class SearchEngine {
                     return;
                 }
                 current = current.next;
+            }
+        }
+    }
+
+    public List<Product> searchByPrefix(String prefix) {
+        List<Product> result = new ArrayList<>();
+
+        if (prefix == null) {
+            return result; // prefix null => không có kết quả
+        }
+
+        prefix = prefix.toLowerCase(); // chuẩn hoá prefix để tìm chính xác
+
+        TrieNode current = trieRoot; // bắt đầu từ gốc trie
+
+        for (int i = 0; i < prefix.length(); i++) {
+            char c = prefix.charAt(i);
+            int index = (int) c; // chuyển ký tự thành chỉ số trong mảng con
+
+            if (current.children[index] == null) {
+                return result; // nếu nhánh không tồn tại thì không tìm được prefix
+            }
+
+            current = current.children[index]; // đi tiếp theo ký tự
+        }
+
+        collectProducts(current, result); // thu thập sản phẩm từ subtree bắt đầu tại nút tìm được
+
+        return result; // trả về danh sách các sản phẩm khớp prefix
+    }
+
+    private void collectProducts(TrieNode node, List<Product> result) {
+        if (node == null) {
+            return; // nếu nút null thì không còn gì để duyệt
+        }
+
+        if (node.isEndOfWord) {
+            for (Product p : node.products) {
+                result.add(p); // nếu đây là kết thúc từ, thêm sản phẩm vào kết quả
+            }
+        }
+
+        for (int i = 0; i < 256; i++) {
+            if (node.children[i] != null) {
+                collectProducts(node.children[i], result); // tiếp tục duyệt các nhánh con
             }
         }
     }
