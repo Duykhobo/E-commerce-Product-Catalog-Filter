@@ -99,6 +99,9 @@ public class SearchEngine {
             if(index>=256){
                 continue;
             }
+            if(current.children[index]==null){
+                current.children[index]=new TrieNode();
+            }
             current=current.children[index];
             validCharCount++;
         }
