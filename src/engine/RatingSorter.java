@@ -32,6 +32,7 @@ public class RatingSorter {
         for(int i = 0 ; i < this.size; i++){
             newHeap[i] = heap[i];
         }
+        this.heap = newHeap;
     }
 
 
@@ -39,6 +40,10 @@ public class RatingSorter {
 
     // TODO (Trịnh Lê Thiên Quân): Viết hàm thêm sản phẩm vào mảng và thực hiện Heapify Up (chìm lên) dựa theo Rating
     public void insert(Product product) {
+        // kiểm tra null
+        if(product == null){
+            return;
+        }
         // Kiểm tra mảng đầy
         if (size == capacity) {
             resize();
