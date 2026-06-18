@@ -1,8 +1,9 @@
 package datastructure.list;
 
 import entity.Product;
+import java.util.Iterator;
 
-public class ProductLinkedList {
+public class ProductLinkedList implements Iterable<Product> {
     public ProductNode head;
     public ProductNode tail;
     public int size;
@@ -23,6 +24,25 @@ public class ProductLinkedList {
             tail = newNode;
         }
         size++;
+    }
+
+    @Override
+    public Iterator<Product> iterator() {
+        return new Iterator<Product>() {
+            private ProductNode current = head;
+
+            @Override
+            public boolean hasNext() {
+                return current != null;
+            }
+
+            @Override
+            public Product next() {
+                Product data = current.data;
+                current = current.next;
+                return data;
+            }
+        };
     }
 
     @Override
