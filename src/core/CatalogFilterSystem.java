@@ -4,7 +4,7 @@ import engine.PriceEngine;
 import engine.SearchEngine;
 import engine.RatingSorter;
 import entity.Product;
-import datastructure.list.ProductLinkedList;
+import datastructure.array.ProductArray;
 
 public class CatalogFilterSystem {
     public PriceEngine priceEngine;
@@ -23,32 +23,59 @@ public class CatalogFilterSystem {
         priceEngine.insertProduct(p);
         searchEngine.put(p.getId(), p);
         
-        // Trie và Max-Heap
-        searchEngine.insertToTrie(p.getName().toLowerCase(), p);
+        // Mảng động và Mảng sắp xếp sẵn
+        searchEngine.insertToArray(p.getName().toLowerCase(), p);
         ratingSorter.insert(p);
     }
 
     // Hàm gọi chức năng lọc giá
-    public ProductLinkedList filterByPrice(double min, double max) {
-        ProductLinkedList result = new ProductLinkedList();
+    public ProductArray filterByPrice(double min, double max) {
+        ProductArray result = new ProductArray();
         priceEngine.searchByPriceRange(priceEngine.root, min, max, result);
         return result;
     }
 
     // Lấy top đánh giá cao nhất
-    public ProductLinkedList getTopRated(int k) {
-        ProductLinkedList topRated = new ProductLinkedList();
-        for (int i = 0; i < k; i++) {
-            Product p = ratingSorter.extractMax();
-            if (p != null) {
-                topRated.add(p);
-            }
-        }
-        return topRated;
+    public ProductArray getTopRated(int k) {
+        return ratingSorter.getTopRated(k);
     }
 
     // Gợi ý tìm kiếm Autocomplete
-    public ProductLinkedList autocomplete(String prefix) {
+    public ProductArray autocomplete(String prefix) {
         return searchEngine.searchByPrefix(prefix.toLowerCase());
+    }
+
+    // Lấy toàn bộ sản phẩm (Read)
+    public ProductArray getAllProducts() {
+        ProductArray result = new ProductArray();
+        for (int i = 0; i < searchEngine.productArray.size; i++) {
+            Product p = searchEngine.productArray.data[i];
+            if (p.isActive()) {
+                result.add(p);
+            }
+        }
+        return result;
+    }
+
+    // Cập nhật sản phẩm (Update)
+    public boolean updateProduct(String id, String newName, double newPrice, double newRating) {
+        Product oldProduct = searchEngine.getById(id);
+        if (oldProduct == null) {
+            return false;
+        }
+        oldProduct.setActive(false); // Xóa mềm cái cũ
+        Product newProduct = new Product(id, newName, newPrice, newRating);
+        addProduct(newProduct); // Thêm cái mới
+        return true;
+    }
+
+    // Xóa sản phẩm (Delete)
+    public boolean deleteProduct(String id) {
+        Product p = searchEngine.getById(id);
+        if (p != null) {
+            p.setActive(false);
+            return true;
+        }
+        return false;
     }
 }

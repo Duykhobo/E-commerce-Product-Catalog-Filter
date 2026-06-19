@@ -1,6 +1,6 @@
 package engine;
 
-import datastructure.list.ProductLinkedList;
+import datastructure.array.ProductArray;
 
 import datastructure.tree.TreeNode;
 import entity.Product;
@@ -46,7 +46,7 @@ public class PriceEngine {
     }
 
     // Đã hoàn thành: Đọc hiểu và tinh chỉnh logic Duyệt cây (In-Order) để lọc giá
-    public void searchByPriceRange(TreeNode<Product> node, double min, double max, ProductLinkedList result) {
+    public void searchByPriceRange(TreeNode<Product> node, double min, double max, ProductArray result) {
         if (node == null) {
             return;
         }
@@ -60,7 +60,9 @@ public class PriceEngine {
 
         // 2. Thêm vào kết quả nếu thoả mãn điều kiện
         if (currentPrice >= min && currentPrice <= max) {
-            result.add(node.getData());
+            if (node.getData().isActive()) {
+                result.add(node.getData());
+            }
         }
 
         // 3. Duyệt nhánh phải nếu có khả năng chứa giá trị <= max
