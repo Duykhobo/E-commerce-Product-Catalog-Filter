@@ -1,62 +1,47 @@
 package engine;
 
+import datastructure.array.ProductArray;
 import entity.Product;
 
 public class RatingSorter {
-    public Product[] heapArray;
-    public int size;
+    public ProductArray topRatingArray;
     public int capacity;
 
     public RatingSorter(int capacity) {
         this.capacity = capacity;
-        this.heapArray = new Product[capacity];
-        this.size = 0;
+        this.topRatingArray = new ProductArray();
     }
 
-    // TODO (Trịnh Lê Thiên Quân): Triển khai chèn Product vào Max-Heap (sift-up)
-    public void insertProduct(Product p) {
-        // ...
-    }
-
-    // TODO (Trịnh Lê Thiên Quân): Viết hàm heapify nếu cần tái cân bằng heap tại một index
-    public void heapify(int index) {
-        // ...
-    }
-
-    // Snippet đã cung cấp trong báo cáo
-    public Product extractMax() {
-        if (size == 0) {
-            return null;
+    // TODO (Trịnh Lê Thiên Quân): Viết hàm thêm sản phẩm vào mảng và thực hiện
+    // chèn có sắp xếp (Insertion Sort) dựa theo Rating giảm dần
+    public void insert(Product product) {
+        if (product == null) {
+            return;
         }
-        Product topProduct = heapArray[0];
-        heapArray[0] = heapArray[size - 1];
-        heapArray[size - 1] = null; 
-        size--;
         
-        int currentIndex = 0;
+        topRatingArray.add(product);
         
-        while (true) {
-            int leftChildIndex = 2 * currentIndex + 1;
-            int rightChildIndex = 2 * currentIndex + 2;
-            int largestIndex = currentIndex;
-            
-            if (leftChildIndex < size && 
-                heapArray[leftChildIndex].getRating() > heapArray[largestIndex].getRating()) {
-                largestIndex = leftChildIndex;
-            }
-            if (rightChildIndex < size && 
-                heapArray[rightChildIndex].getRating() > heapArray[largestIndex].getRating()) {
-                largestIndex = rightChildIndex;
-            }
-            if (largestIndex == currentIndex) {
-                break;
-            }
-            Product temp = heapArray[currentIndex];
-            heapArray[currentIndex] = heapArray[largestIndex];
-            heapArray[largestIndex] = temp;
-            
-            currentIndex = largestIndex;
+        int i = topRatingArray.size - 1;
+        while (i > 0 && topRatingArray.data[i].getRating() > topRatingArray.data[i - 1].getRating()) {
+            Product temp = topRatingArray.data[i];
+            topRatingArray.data[i] = topRatingArray.data[i - 1];
+            topRatingArray.data[i - 1] = temp;
+            i--;
         }
-        return topProduct;
+    }
+
+    // TODO (Nguyễn Thanh Duy): Viết hàm trích xuất mảng chứa K sản phẩm có Rating cao nhất
+    public ProductArray getTopRated(int k) {
+        ProductArray result = new ProductArray();
+        int count = 0;
+        for (int i = 0; i < topRatingArray.size; i++) {
+            Product p = topRatingArray.data[i];
+            if (!p.isActive()) continue; // Bỏ qua sản phẩm đã xóa
+            
+            result.add(p);
+            count++;
+            if (count == k) break;
+        }
+        return result;
     }
 }
