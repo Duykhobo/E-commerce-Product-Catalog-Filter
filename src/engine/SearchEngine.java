@@ -18,7 +18,6 @@ public class SearchEngine {
         @SuppressWarnings("unchecked")
         HashNode<String, Product>[] newTable = (HashNode<String, Product>[]) new HashNode[tableCapacity];
         this.hashTable = newTable;
-        this.trieRoot = new TrieNode(); // Khởi tạo Node gốc cho Trie
     }
 
     // TODO (Nguyễn Ngọc Minh Tân): Viết hàm tính Hash Index từ String key
