@@ -1,7 +1,7 @@
 package engine;
 
-import datastructure.hash.HashNode;
 import datastructure.array.ProductArray;
+import datastructure.hash.HashNode;
 import entity.Product;
 
 public class SearchEngine {
@@ -14,7 +14,7 @@ public class SearchEngine {
         @SuppressWarnings("unchecked")
         HashNode<String, Product>[] newTable = (HashNode<String, Product>[]) new HashNode[tableCapacity];
         this.hashTable = newTable;
-        this.productArray = new ProductArray(); 
+        this.productArray = new ProductArray();
     }
 
     // TODO (Nguyễn Ngọc Minh Tân): Viết hàm tính Hash Index từ String key
@@ -25,32 +25,34 @@ public class SearchEngine {
         int hashCode = 0;
         for (int i = 0; i < key.length(); i++) {
             hashCode = 31 * hashCode + key.charAt(i);
-        }
 
+        }
         int absHashCode = Math.abs(hashCode);
         if (absHashCode < 0) {
             absHashCode = Integer.MAX_VALUE;
         }
-
         return absHashCode % capacity;
     }
 
-    // TODO (Phan Khánh Duy): Viết thuật toán chèn Product vào hashTable và xử lý đụng độ (Chaining)
+    // TODO (Phan Khánh Duy): Viết thuật toán chèn Product vào hashTable và xử lý
+    // đụng độ (Chaining)
     public void put(String key, Product product) {
-        if (key == null || product == null) return;
+        if (key == null || product == null) {
+            return;
+        }
         int index = getBucketIndex(key);
-
         if (hashTable[index] == null) {
-            hashTable[index] = new HashNode<>(key, product);
+            hashTable[index] = new HashNode<String, Product>(key, product);
+
         } else {
-            HashNode<String, Product> current = hashTable[index];
+            HashNode<String, Product> current = new HashNode<String, Product>(key, product);
             while (current != null) {
                 if (current.key.equals(key)) {
-                    current.value = product; 
+                    current.value = product;
                     return;
                 }
                 if (current.next == null) {
-                    current.next = new HashNode<>(key, product);
+                    current.next = new HashNode<String, Product>(key, product);
                     return;
                 }
                 current = current.next;
@@ -58,40 +60,40 @@ public class SearchEngine {
         }
     }
 
-    // TODO (Nguyễn Ngọc Minh Tân): Triển khai thuật toán chèn tên sản phẩm vào mảng động
+    // TODO (Nguyễn Ngọc Minh Tân): Triển khai thuật toán chèn tên sản phẩm vào mảng
+    // động
     public void insertToArray(String name, Product product) {
-        if (product == null) return;
+        if (product == null) {
+            return;
+        }
         productArray.add(product);
     }
 
     public ProductArray searchByPrefix(String prefix) {
         ProductArray result = new ProductArray();
         if (prefix == null || prefix.isEmpty()) {
-            return result; 
+            return result;
         }
-
-        prefix = prefix.toLowerCase(); 
-
+        prefix = prefix.toLowerCase();
         for (int i = 0; i < productArray.size; i++) {
             Product p = productArray.data[i];
-            if (!p.isActive()) continue; // Bỏ qua sản phẩm đã xóa
-
+            if (!p.isActive())
+                continue;
             if (p.getName().toLowerCase().startsWith(prefix)) {
                 result.add(p);
             }
         }
-
-        return result; 
+        return result;
     }
 
     public Product getById(String id) {
         int index = getBucketIndex(id);
-
         HashNode<String, Product> current = hashTable[index];
         while (current != null) {
             if (current.key.equals(id)) {
-                if (!current.value.isActive()) return null; // Không trả về nếu đã xóa
-                return current.value;
+                if (current.value.isActive()) {
+                    return current.value;
+                }
             }
             current = current.next;
         }
