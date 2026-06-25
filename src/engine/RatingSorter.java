@@ -18,29 +18,36 @@ public class RatingSorter {
         if (product == null) {
             return;
         }
-        
+        // Thêm vào cuối mảng
         topRatingArray.add(product);
         
+        // Thực hiện Insertion Sort dựa theo Rating giảm dần
         int i = topRatingArray.size - 1;
         while (i > 0 && topRatingArray.data[i].getRating() > topRatingArray.data[i - 1].getRating()) {
-            Product temp = topRatingArray.data[i];
+            Product tmp = topRatingArray.data[i];
             topRatingArray.data[i] = topRatingArray.data[i - 1];
-            topRatingArray.data[i - 1] = temp;
+            topRatingArray.data[i - 1] = tmp;
             i--;
         }
     }
 
-    // TODO (Nguyễn Thanh Duy): Viết hàm trích xuất mảng chứa K sản phẩm có Rating cao nhất
+    // TODO (Nguyễn Thanh Duy): Viết hàm trích xuất mảng chứa K sản phẩm có Rating
+    // cao nhất
     public ProductArray getTopRated(int k) {
         ProductArray result = new ProductArray();
+
         int count = 0;
         for (int i = 0; i < topRatingArray.size; i++) {
             Product p = topRatingArray.data[i];
-            if (!p.isActive()) continue; // Bỏ qua sản phẩm đã xóa
-            
+            if (!p.isActive()) {
+                continue;
+            }
             result.add(p);
             count++;
-            if (count == k) break;
+
+            if (count == k) {
+                break;
+            }
         }
         return result;
     }
