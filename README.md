@@ -1,30 +1,57 @@
 # E-commerce Product Catalog Filter (CSD Project)
 
-Dự án này là bài tập thực hành môn **Cấu trúc Dữ liệu và Giải thuật (CSD)**. Mục tiêu của dự án là xây dựng một hệ thống quản lý và lọc danh mục sản phẩm thương mại điện tử **từ con số 0**, hoàn toàn không sử dụng các cấu trúc dữ liệu có sẵn của Java (như `ArrayList`, `LinkedList`, `HashMap`, `PriorityQueue` v.v.).
+Dự án này là đồ án thực hành môn **Cấu trúc Dữ liệu và Giải thuật (CSD)**. Mục tiêu của dự án là xây dựng một hệ thống quản lý và lọc danh mục sản phẩm thương mại điện tử **từ con số 0**, bám sát yêu cầu môn học bằng việc **tự triển khai 100%** các cấu trúc dữ liệu, hoàn toàn **không** sử dụng các Collection có sẵn của Java (như `ArrayList`, `LinkedList`, `HashMap`, `Queue`) hay Generics (`<T>`).
 
-## 🎯 Yêu cầu môn học
+Hệ thống được trang bị giao diện dòng lệnh (CLI) trực quan, có màu sắc sinh động, quản lý bộ dữ liệu 50 sản phẩm thực tế.
 
-- Tự triển khai **100% thủ công** 3 cấu trúc dữ liệu cốt lõi (Data Structures):
-  1. **Mảng động (Dynamic Array - ProductArray)**
-  2. **Bảng Băm (Hash Map)**
-  3. **Cây tìm kiếm nhị phân (Binary Search Tree - BST)**
-  - Ứng dụng các cấu trúc dữ liệu và thuật toán (như **Insertion Sort**) để giải quyết bài toán thực tế: Tìm kiếm siêu tốc bằng ID, lọc sản phẩm theo khoảng giá, tìm kiếm chuỗi (Prefix search), và hiển thị top sản phẩm đánh giá cao.
+## 🎯 Cấu trúc Dữ liệu Ứng dụng
 
-## 📂 Cấu trúc mã nguồn hiện tại
+Đồ án triển khai thành công 5 cấu trúc dữ liệu cốt lõi vào các chức năng thực tiễn:
 
-Mã nguồn được phân tách rõ ràng theo chuẩn thiết kế Module để đảm bảo tính dễ đọc và dễ bảo trì:
+1. **Hash Table (Bảng băm):** 
+   - Ứng dụng để tra cứu siêu tốc `O(1)` sản phẩm theo mã ID.
+   - Ứng dụng để lọc các sản phẩm theo chính xác 1 mức điểm Đánh giá (Rating).
+2. **Binary Search Tree - BST (Cây tìm kiếm nhị phân):** 
+   - Ứng dụng để lọc danh sách sản phẩm nằm trong một **Khoảng giá (Price Range)** và tự động trả về kết quả được sắp xếp tăng dần nhờ thuật toán In-Order.
+3. **Circular Queue (Hàng đợi vòng tĩnh):** 
+   - Ứng dụng để lưu trữ và hiển thị **Lịch sử tìm kiếm gần đây** (giới hạn số lượng lưu trữ, tự động ghi đè vòng tròn).
+4. **Singly Linked List (Danh sách liên kết đơn):** 
+   - Ứng dụng để quản lý **Giỏ hàng (Shopping Cart)** với khả năng thêm bớt số lượng linh hoạt vô hạn.
+5. **Dynamic Array (Mảng động):** 
+   - Ứng dụng để làm mảng trả về kết quả chung, đồng thời phục vụ tính năng **Tìm kiếm tự động (Autocomplete)** thông qua việc duyệt mảng so khớp chuỗi.
 
-*   **`src/entity/Product.java`**: Lớp đại diện cho Sản phẩm (ID, Tên, Giá, Đánh giá).
-*   **`src/datastructure/`**: Nơi chứa lõi Cấu trúc dữ liệu "nhà làm":
-    *   `/array/`: Cấu trúc Mảng động (Thay thế hoàn toàn cho `ArrayList` và `Trie`).
-    *   `/hash/`: Cấu trúc Node cho Hash Map (Xử lý va chạm bằng Chaining).
-    *   `/tree/`: Cấu trúc Node cho Cây nhị phân.
-*   **`src/engine/`**: Nơi thực thi 4 thuật toán lõi của dự án:
-    *   `PriceEngine.java`: Quản lý BST để lọc theo khoảng giá.
-    *   `RatingSorter.java`: Quản lý Max-Heap để lấy Top Rating.
-    *   `SearchEngine.java`: Quản lý Hash Map (tìm ID) và Trie (tìm Prefix).
-*   **`src/core/CatalogFilterSystem.java`**: Lớp nghiệp vụ, đóng vai trò nhạc trưởng điều phối các Engine ở trên.
-*   **`src/App.java`**: File Main chứa dữ liệu giả lập để test ứng dụng.
+*(Để xem giải thích chi tiết về độ phức tạp Big O, thuật toán và ưu nhược điểm, vui lòng tham khảo file `TongHop_CauTrucDuLieu.md`)*
 
-## 🚀 Hướng dẫn chạy
-Sau khi các thành viên trong nhóm code xong các hàm `// TODO` trong các nhánh (branch) của mình và gộp code lại, bạn có thể chạy hàm `main` trong file `src/App.java` để kiểm thử toàn bộ kết quả.
+## 📂 Cấu trúc Mã nguồn
+
+Mã nguồn được phân tách rõ ràng theo chuẩn thiết kế Facade và Module để đảm bảo tính dễ đọc và mở rộng:
+
+*   **`data.txt`**: File Text lưu trữ giả lập cơ sở dữ liệu gồm 50 sản phẩm đa dạng.
+*   **`src/App.java`**: Lớp Main điều khiển giao diện Menu CLI (hỗ trợ màu ANSI), tương tác với người dùng.
+*   **`src/entity/Product.java`**: Lớp thực thể đại diện cho Sản phẩm (ID, Tên, Giá, Đánh giá, Trạng thái Active/Xóa).
+*   **`src/core/CatalogFilterSystem.java`**: Lớp Facade, nhạc trưởng điều phối toàn bộ các Engine bên dưới.
+*   **`src/engine/`**: Nơi thực thi 5 Engine lõi:
+    *   `PriceEngine.java`: Quản lý Cây BST cho bài toán Giá.
+    *   `RatingEngine.java`: Quản lý Hash Table cho bài toán Điểm đánh giá.
+    *   `SearchEngine.java`: Quản lý Hash Table (ID) và Mảng (Autocomplete).
+    *   `SearchHistory.java`: Quản lý Queue cho bài toán Lịch sử.
+    *   `ShoppingCart.java`: Quản lý Linked List cho Giỏ hàng.
+*   **`src/datastructure/`**: Nơi chứa lõi của các Node:
+    *   `/array/ProductArray.java`: Cấu trúc Mảng động.
+    *   `/hash/HashNode.java`: Cấu trúc Node cho Hash Table (Chaining).
+    *   `/tree/`: Chứa `TreeNode` và `PriceNode` cho Cây nhị phân.
+
+## 🚀 Hướng dẫn chạy chương trình
+
+Dự án có sử dụng ký tự UTF-8 và màu sắc ANSI, do đó bạn nên chạy bằng Terminal của IDE (VSCode Terminal, IntelliJ Terminal) hoặc Git Bash / PowerShell để hiển thị đẹp nhất.
+
+1. Di chuyển vào thư mục gốc của dự án.
+2. Biên dịch toàn bộ source code với cờ `UTF-8`:
+   ```bash
+   javac -encoding UTF-8 -d bin -sourcepath src src/App.java
+   ```
+3. Chạy chương trình:
+   ```bash
+   java -cp bin App
+   ```
+4. Trải nghiệm Menu 11 tính năng cực kỳ xịn xò!

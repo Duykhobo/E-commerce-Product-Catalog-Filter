@@ -1,39 +1,37 @@
 package datastructure.tree;
 
-public class TreeNode<T> {
-    private T data;
-    private TreeNode<T> left;
-    private TreeNode<T> right;
+public class TreeNode {
+    private Object data;
+    private TreeNode left;
+    private TreeNode right;
 
-    public TreeNode(T data) {
+    public TreeNode(Object data) {
         this.data = data;
         this.left = null;
         this.right = null;
     }
 
-    public T getData() {
+    public Object getData() {
         return data;
     }
 
-    public TreeNode<T> getLeft() {
+    public TreeNode getLeft() {
         return left;
     }
 
-    public TreeNode<T> getRight() {
+    public TreeNode getRight() {
         return right;
     }
 
-    public void setData(T data) {
+    public void setData(Object data) {
         this.data = data;
     }
 
-    public void setLeft(TreeNode<T> left) {
+    public void setLeft(TreeNode left) {
         this.left = left;
     }
 
-    public void setRight(TreeNode<T> right) {
+    public void setRight(TreeNode right) {
         this.right = right;
     }
-
-    
 }
