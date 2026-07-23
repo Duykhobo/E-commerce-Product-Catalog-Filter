@@ -1,13 +1,13 @@
 package engine;
 
 import datastructure.array.ProductArray;
-
-import datastructure.tree.TreeNode;
+import datastructure.tree.PriceNode;
 import entity.Product;
 
+// Cấu trúc Binary Search Tree (BST) quản lý sản phẩm theo giá
 public class PriceEngine {
-    public TreeNode<Product> root;
-    private int size;
+    public PriceNode root; // Node gốc
+    private int size;      // Tổng số lượng sản phẩm
 
     public PriceEngine() {
         this.root = null;
@@ -18,54 +18,79 @@ public class PriceEngine {
         return size == 0;
     }
 
-    // TODO (Trịnh Lê Thiên Quân): Triển khai thuật toán chèn Product vào cây BST
-    // theo giá (price)
-    public void insertProduct(Product p) {
-        TreeNode<Product> newNode = new TreeNode<Product>(p);
-        if (isEmpty()) {
-            root = newNode;
-            size++;
-        } else {
-            TreeNode<Product> current = root;
-            TreeNode<Product> parent = current;
-            while (current != null) {
-                parent = current;
-                if (current.getData().getPrice() <= newNode.getData().getPrice()) {
-                    current = current.getRight();
-                } else {
-                    current = current.getLeft();
-                }
-            }
-            if (parent.getData().getPrice() <= newNode.getData().getPrice()) {
-                parent.setRight(newNode);
-            } else {
-                parent.setLeft(newNode);
-            }
-            size++;
-        }
+    // Hàm so sánh an toàn cho kiểu double (tránh sai số IEEE 754)
+    private int compare(double p1, double p2) {
+        if (Math.abs(p1 - p2) < 1e-9) return 0; // Trùng giá
+        return p1 < p2 ? -1 : 1;                // Nhỏ hơn hoặc Lớn hơn
     }
 
-    // Đã hoàn thành: Đọc hiểu và tinh chỉnh logic Duyệt cây (In-Order) để lọc giá
-    public void searchByPriceRange(TreeNode<Product> node, double min, double max, ProductArray result) {
-        if (node == null) {
+    // Chèn Product vào cây BST (O(log N))
+    public void insertProduct(Product p) {
+        if (p == null) return;
+        
+        if (root == null) {
+            root = new PriceNode(p.getPrice());
+            root.addProduct(p);
+            size++;
             return;
         }
 
-        double currentPrice = node.getData().getPrice();
+        PriceNode current = root;
+        PriceNode parent = null;
+        int cmp = 0; // Biến lưu kết quả so sánh
+        
+        // Duyệt tìm vị trí chèn
+        while (current != null) {
+            parent = current;
+            cmp = compare(p.getPrice(), current.getPrice());
+            
+            if (cmp == 0) {
+                current.addProduct(p); // Giá trùng khớp
+                size++;
+                return;
+            } else if (cmp < 0) {
+                current = current.getLeft();  // Sang trái
+            } else {
+                current = current.getRight(); // Sang phải
+            }
+        }
 
-        // 1. Duyệt nhánh trái nếu có khả năng chứa giá trị >= min
+        // Tạo Node mới tại vị trí lá
+        PriceNode newNode = new PriceNode(p.getPrice());
+        newNode.addProduct(p);
+        
+        // Liên kết với Node cha (Dựa vào kết quả so sánh cuối cùng)
+        if (cmp < 0) {
+            parent.setLeft(newNode);
+        } else {
+            parent.setRight(newNode);
+        }
+        size++;
+    }
+
+    // Tìm kiếm khoảng giá bằng In-Order Traversal (O(K + log N))
+    public void searchByPriceRange(PriceNode node, double min, double max, ProductArray result) {
+        if (node == null) return;
+
+        double currentPrice = node.getPrice();
+
+        // Bước 1: Nhánh trái (Cắt tỉa nếu giá <= min)
         if (currentPrice > min) {
             searchByPriceRange(node.getLeft(), min, max, result);
         }
 
-        // 2. Thêm vào kết quả nếu thoả mãn điều kiện
+        // Bước 2: Node hiện tại
         if (currentPrice >= min && currentPrice <= max) {
-            if (node.getData().isActive()) {
-                result.add(node.getData());
+            ProductArray products = node.getProducts();
+            for (int i = 0; i < products.size; i++) {
+                Product p = products.get(i);
+                if (p != null && p.isActive()) {
+                    result.add(p);
+                }
             }
         }
 
-        // 3. Duyệt nhánh phải nếu có khả năng chứa giá trị <= max
+        // Bước 3: Nhánh phải (Cắt tỉa nếu giá >= max)
         if (currentPrice <= max) {
             searchByPriceRange(node.getRight(), min, max, result);
         }

@@ -1,9 +1,8 @@
 package datastructure.array;
 
 import entity.Product;
-import java.util.Iterator;
 
-public class ProductArray implements Iterable<Product> {
+public class ProductArray {
     public Product[] data;
     public int size;
     public int capacity;
@@ -37,25 +36,6 @@ public class ProductArray implements Iterable<Product> {
         }
         return data[index];
     }
-
-    @Override
-    public Iterator<Product> iterator() {
-        return new Iterator<Product>() {
-            private int currentIndex = 0;
-
-            @Override
-            public boolean hasNext() {
-                return currentIndex < size;
-            }
-
-            @Override
-            public Product next() {
-                return data[currentIndex++];
-            }
-        };
-    }
-
-    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
