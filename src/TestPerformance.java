@@ -4,7 +4,7 @@ import datastructure.array.ProductArray;
 
 public class TestPerformance {
     public static void main(String[] args) {
-        int[] sizes = {100, 1000, 10000, 50000, 100000};
+        int[] sizes = {100, 1000, 10000, 50000};
         
         System.out.println("=======================================================================================================================");
         System.out.printf("%-10s | %-30s | %-30s | %-30s\n", "Size (n)", "Price Filter (BST vs Linear)", "Rating Filter (Hash vs Linear)", "ID Search (Hash vs Linear)");
@@ -35,7 +35,7 @@ public class TestPerformance {
             system.searchEngine.getById(targetId);
             linearSearchId(all, targetId);
             
-            int iterations = 50000;
+            int iterations = 100;
             
             // 1. Measure Price Filter (BST)
             long startTime1 = System.nanoTime();
