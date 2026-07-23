@@ -2,104 +2,104 @@ package engine;
 
 import entity.Product;
 
-// Lớp này triển khai cấu trúc dữ liệu Singly Linked List (Danh sách liên kết đơn)
-// Mục đích: Dùng để lưu trữ Giỏ hàng (số lượng mua tùy ý, danh sách linh hoạt)
+// Cấu trúc dữ liệu Singly Linked List quản lý Giỏ hàng
 public class ShoppingCart {
 
-    // Lớp Node nội bộ dành riêng cho Giỏ hàng
-    // Mỗi Node (CartNode) đại diện cho một mặt hàng nằm trong giỏ
+    // Node chứa thông tin sản phẩm trong giỏ
     private static class CartNode {
-        Product product;    // Dữ liệu 1: Sản phẩm (Tên, Giá, ID...)
-        int quantity;       // Dữ liệu 2: Số lượng mua của sản phẩm đó
-        CartNode next;      // Con trỏ (Pointer): Trỏ đến mặt hàng tiếp theo trong giỏ
+        Product product;
+        int quantity;
+        CartNode next;
 
-        // Hàm khởi tạo Node
         CartNode(Product product, int quantity) {
             this.product = product;
             this.quantity = quantity;
-            this.next = null; // Mặc định khi mới tạo, Node chưa nối vào đâu nên next = null
+            this.next = null;
         }
     }
 
-    private CartNode head;    // Con trỏ quản lý toàn bộ List, trỏ vào phần tử ĐẦU TIÊN của giỏ hàng
-    private int totalItems;   // Biến phụ lưu trữ tổng số loại mặt hàng đang có trong giỏ
+    private CartNode head;    // Trỏ phần tử ĐẦU
+    private CartNode tail;    // Trỏ phần tử CUỐI
+    private int totalItems;   // Tổng số loại mặt hàng
 
     public ShoppingCart() {
-        this.head = null;     // Ban đầu giỏ hàng trống nên head = null
+        this.head = null;
+        this.tail = null;
         this.totalItems = 0;
     }
 
-    // Thêm sản phẩm vào giỏ (Thao tác Insert)
+    // Thêm sản phẩm vào giỏ
     public void addProduct(Product p, int quantity) {
-        // Kiểm tra dữ liệu đầu vào
         if (p == null || quantity <= 0) return;
 
-        // BƯỚC 1: KIỂM TRA SẢN PHẨM ĐÃ CÓ TRONG GIỎ CHƯA
-        CartNode current = head; // Bắt đầu duyệt từ đầu danh sách (head)
-        while (current != null) { // Lặp cho đến khi hết danh sách
+        // BƯỚC 1: Kiểm tra sản phẩm đã tồn tại chưa
+        CartNode current = head;
+        while (current != null) {
             if (current.product.getId().equals(p.getId())) {
-                // Nếu tìm thấy ID trùng khớp -> Sản phẩm đã có trong giỏ
-                current.quantity += quantity; // Chỉ cần cộng dồn thêm số lượng mua
-                return; // Kết thúc hàm
+                current.quantity += quantity;
+                return;
             }
-            current = current.next; // Di chuyển sang phần tử tiếp theo
+            current = current.next;
         }
 
-        // BƯỚC 2: NẾU SẢN PHẨM CHƯA CÓ TRONG GIỎ
-        // Tạo một Node mới chứa thông tin sản phẩm và số lượng
+        // BƯỚC 2: Thêm mới vào CUỐI danh sách (Insert at Tail)
         CartNode newNode = new CartNode(p, quantity);
+        if (head == null) {
+            head = newNode;
+            tail = newNode;
+        } else {
+            tail.next = newNode;
+            tail = newNode;
+        }
         
-        // Chèn Node mới vào ĐẦU danh sách (Insert at Head) - Độ phức tạp O(1)
-        newNode.next = head; // Cho con trỏ next của Node mới trỏ vào Node đầu tiên cũ
-        head = newNode;      // Cập nhật lại head để Node mới trở thành phần tử ĐẦU TIÊN
-        
-        totalItems++; // Tăng tổng số loại mặt hàng lên 1
+        totalItems++;
     }
 
-    // Xóa sản phẩm khỏi giỏ theo ID (Thao tác Delete)
+    // Xóa sản phẩm khỏi giỏ theo ID
     public void removeProduct(String productId) {
-        // Nếu danh sách trống thì không làm gì cả
         if (head == null) return;
 
-        // TRƯỜNG HỢP 1: Phần tử cần xóa nằm ngay ĐẦU danh sách (head)
+        // BƯỚC 1: Xóa ở ĐẦU danh sách
         if (head.product.getId().equals(productId)) {
-            head = head.next; // Trỏ head sang phần tử thứ 2, phần tử đầu cũ sẽ bị Java Garbage Collector thu hồi
+            head = head.next;
+            if (head == null) {
+                tail = null;
+            }
             totalItems--;
             return;
         }
 
-        // TRƯỜNG HỢP 2: Phần tử cần xóa nằm ở GIỮA hoặc CUỐI danh sách
+        // BƯỚC 2: Xóa ở GIỮA hoặc CUỐI
         CartNode current = head;
-        // Duyệt tìm phần tử NGAY TRƯỚC phần tử cần xóa (vì là danh sách đơn, cần giữ được Node đứng trước)
         while (current.next != null) {
             if (current.next.product.getId().equals(productId)) {
-                // Đã tìm thấy. Thực hiện nối tắt (Bỏ qua Node cần xóa)
-                // Con trỏ next của Node hiện tại sẽ trỏ thẳng tới Node đứng sau Node cần xóa
+                if (current.next == tail) {
+                    tail = current;
+                }
                 current.next = current.next.next;
                 totalItems--;
                 return;
             }
-            current = current.next; // Tiếp tục di chuyển
+            current = current.next;
         }
     }
 
-    // Tính tổng tiền giỏ hàng (Thao tác Traversal/Duyệt toàn bộ danh sách)
+    // Tính tổng tiền giỏ hàng
     public double calculateTotal() {
-        double total = 0; // Biến lưu tổng tiền
-        CartNode current = head; // Bắt đầu duyệt từ đầu danh sách
+        double total = 0;
+        CartNode current = head;
         
-        // Vòng lặp duyệt qua từng Node cho đến cuối danh sách (current == null)
         while (current != null) {
-            // Cộng dồn: Giá * Số lượng
             total += current.product.getPrice() * current.quantity;
-            current = current.next; // Nhảy sang Node tiếp theo
+            current = current.next;
         }
-        return total; // Trả về tổng tiền
+        return total;
     }
 
     // Xóa toàn bộ giỏ hàng
     public void clearCart() {
-        head = null;     // Ngắt kết nối toàn bộ danh sách, GC sẽ tự thu hồi
-        totalItems = 0;  // Trả số lượng về 0
+        head = null;
+        tail = null;
+        totalItems = 0;
     }
 }
