@@ -11,13 +11,14 @@ import java.util.List;
 
 public class FileUtils {
 
-    // Đọc danh sách sản phẩm từ file CSV (định dạng: id,name,price,rating)
     public static List<Product> readProductsFromFile(String filePath) {
         List<Product> products = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+        try ( BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = br.readLine()) != null) {
-                if (line.trim().isEmpty() || line.startsWith("#")) continue;
+                if (line.trim().isEmpty() || line.startsWith("#")) {
+                    continue;
+                }
                 String[] data = line.split(",");
                 if (data.length >= 4) {
                     try {
@@ -41,9 +42,8 @@ public class FileUtils {
         return products;
     }
 
-    // Ghi danh sách sản phẩm ra file CSV
     public static void writeProductsToFile(String filePath, List<Product> products) {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
+        try ( BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
             for (Product p : products) {
                 if (p != null) {
                     bw.write(String.format("%s,%s,%.2f,%.1f,%b", p.getId(), p.getName(), p.getPrice(), p.getRating(), p.isActive()));

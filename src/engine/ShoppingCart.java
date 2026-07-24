@@ -2,11 +2,10 @@ package engine;
 
 import entity.Product;
 
-// Cấu trúc dữ liệu Singly Linked List quản lý Giỏ hàng
 public class ShoppingCart {
 
-    // Node chứa thông tin sản phẩm trong giỏ
     private static class CartNode {
+
         Product product;
         int quantity;
         CartNode next;
@@ -18,9 +17,9 @@ public class ShoppingCart {
         }
     }
 
-    private CartNode head;    // Trỏ phần tử ĐẦU
-    private CartNode tail;    // Trỏ phần tử CUỐI
-    private int totalItems;   // Tổng số loại mặt hàng
+    private CartNode head;
+    private CartNode tail;
+    private int totalItems;
 
     public ShoppingCart() {
         this.head = null;
@@ -28,9 +27,10 @@ public class ShoppingCart {
         this.totalItems = 0;
     }
 
-    // Thêm sản phẩm vào giỏ
     public void addProduct(Product p, int quantity) {
-        if (p == null || quantity <= 0) return;
+        if (p == null || quantity <= 0) {
+            return;
+        }
 
         // BƯỚC 1: Kiểm tra sản phẩm đã tồn tại chưa
         CartNode current = head;
@@ -51,13 +51,14 @@ public class ShoppingCart {
             tail.next = newNode;
             tail = newNode;
         }
-        
+
         totalItems++;
     }
 
-    // Xóa sản phẩm khỏi giỏ theo ID
     public void removeProduct(String productId) {
-        if (head == null) return;
+        if (head == null) {
+            return;
+        }
 
         // BƯỚC 1: Xóa ở ĐẦU danh sách
         if (head.product.getId().equals(productId)) {
@@ -84,11 +85,10 @@ public class ShoppingCart {
         }
     }
 
-    // Tính tổng tiền giỏ hàng
     public double calculateTotal() {
         double total = 0;
         CartNode current = head;
-        
+
         while (current != null) {
             total += current.product.getPrice() * current.quantity;
             current = current.next;
@@ -96,7 +96,6 @@ public class ShoppingCart {
         return total;
     }
 
-    // Xóa toàn bộ giỏ hàng
     public void clearCart() {
         head = null;
         tail = null;
