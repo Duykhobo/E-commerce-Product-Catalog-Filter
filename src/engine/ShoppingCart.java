@@ -1,21 +1,9 @@
 package engine;
 
+import datastructure.linkedlist.CartNode;
 import entity.Product;
 
 public class ShoppingCart {
-
-    private static class CartNode {
-
-        Product product;
-        int quantity;
-        CartNode next;
-
-        CartNode(Product product, int quantity) {
-            this.product = product;
-            this.quantity = quantity;
-            this.next = null;
-        }
-    }
 
     private CartNode head;
     private CartNode tail;
@@ -35,11 +23,11 @@ public class ShoppingCart {
         // BƯỚC 1: Kiểm tra sản phẩm đã tồn tại chưa
         CartNode current = head;
         while (current != null) {
-            if (current.product.getId().equals(p.getId())) {
-                current.quantity += quantity;
+            if (current.getProduct().getId().equals(p.getId())) {
+                current.setQuantity(current.getQuantity() + quantity);
                 return;
             }
-            current = current.next;
+            current = current.getNext();
         }
 
         // BƯỚC 2: Thêm mới vào CUỐI danh sách (Insert at Tail)
@@ -48,7 +36,7 @@ public class ShoppingCart {
             head = newNode;
             tail = newNode;
         } else {
-            tail.next = newNode;
+            tail.setNext(newNode);
             tail = newNode;
         }
 
@@ -61,8 +49,8 @@ public class ShoppingCart {
         }
 
         // BƯỚC 1: Xóa ở ĐẦU danh sách
-        if (head.product.getId().equals(productId)) {
-            head = head.next;
+        if (head.getProduct().getId().equals(productId)) {
+            head = head.getNext();
             if (head == null) {
                 tail = null;
             }
@@ -72,16 +60,16 @@ public class ShoppingCart {
 
         // BƯỚC 2: Xóa ở GIỮA hoặc CUỐI
         CartNode current = head;
-        while (current.next != null) {
-            if (current.next.product.getId().equals(productId)) {
-                if (current.next == tail) {
+        while (current.getNext() != null) {
+            if (current.getNext().getProduct().getId().equals(productId)) {
+                if (current.getNext() == tail) {
                     tail = current;
                 }
-                current.next = current.next.next;
+                current.setNext(current.getNext().getNext());
                 totalItems--;
                 return;
             }
-            current = current.next;
+            current = current.getNext();
         }
     }
 
@@ -90,8 +78,8 @@ public class ShoppingCart {
         CartNode current = head;
 
         while (current != null) {
-            total += current.product.getPrice() * current.quantity;
-            current = current.next;
+            total += current.getProduct().getPrice() * current.getQuantity();
+            current = current.getNext();
         }
         return total;
     }
@@ -102,3 +90,4 @@ public class ShoppingCart {
         totalItems = 0;
     }
 }
+
