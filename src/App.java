@@ -159,9 +159,28 @@ public class App {
                     case "6":
                         System.out.println(BLUE + "--- LOC THEO KHOANG GIA ---" + RESET);
                         System.out.print("Nhap gia nho nhat: ");
-                        double minPrice = Double.parseDouble(scanner.nextLine());
+                        String minStr = scanner.nextLine().trim();
+                        if (minStr.isEmpty()) {
+                            System.out.println(RED + "Khong duoc de trong!" + RESET);
+                            break;
+                        }
+                        double minPrice = Double.parseDouble(minStr);
+                        if (minPrice < 0) {
+                            System.out.println(RED + "Gia khong duoc am!" + RESET);
+                            break;
+                        }
+                        
                         System.out.print("Nhap gia lon nhat: ");
-                        double maxPrice = Double.parseDouble(scanner.nextLine());
+                        String maxStr = scanner.nextLine().trim();
+                        if (maxStr.isEmpty()) {
+                            System.out.println(RED + "Khong duoc de trong!" + RESET);
+                            break;
+                        }
+                        double maxPrice = Double.parseDouble(maxStr);
+                        if (maxPrice < minPrice) {
+                            System.out.println(RED + "Gia lon nhat phai lon hon hoac bang gia nho nhat!" + RESET);
+                            break;
+                        }
                         printProductTable(system.filterByPrice(minPrice, maxPrice));
                         break;
                     case "7":
@@ -173,7 +192,16 @@ public class App {
                     case "8":
                         System.out.println(BLUE + "--- LOC THEO RATING ---" + RESET);
                         System.out.print("Nhap muc Danh gia cu the (Vi du: 5.0, 4.0): ");
-                        double ratingMatch = Double.parseDouble(scanner.nextLine());
+                        String rStr = scanner.nextLine().trim();
+                        if (rStr.isEmpty()) {
+                            System.out.println(RED + "Khong duoc de trong!" + RESET);
+                            break;
+                        }
+                        double ratingMatch = Double.parseDouble(rStr);
+                        if (ratingMatch < 1.0 || ratingMatch > 5.0) {
+                            System.out.println(RED + "Rating phai nam trong khoang tu 1.0 den 5.0!" + RESET);
+                            break;
+                        }
                         printProductTable(system.getProductsByRating(ratingMatch));
                         break;
                     case "9":
