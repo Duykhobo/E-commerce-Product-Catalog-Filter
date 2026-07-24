@@ -10,10 +10,10 @@ public class TestPerformance {
     public static void main(String[] args) {
         int[] sizes = {100, 1000, 10000, 50000};
         
-        System.out.println("=======================================================================================================================");
-        System.out.printf("%-10s | %-30s | %-30s | %-30s\n", "Size (n)", "Price Filter (BST vs Linear)", "Rating Filter (BST vs Linear)", "ID Search (Hash vs Linear)");
-        System.out.printf("%-10s | %-14s | %-13s | %-14s | %-13s | %-14s | %-13s\n", "", "BST (ns)", "Linear (ns)", "BST (ns)", "Linear (ns)", "Hash (ns)", "Linear (ns)");
-        System.out.println("=======================================================================================================================");
+        System.out.println("===================================================================================================");
+        System.out.printf("%-10s | %-30s | %-30s\n", "Size (n)", "Price Filter (BST vs Linear)", "ID Search (Hash vs Linear)");
+        System.out.printf("%-10s | %-14s | %-13s | %-14s | %-13s\n", "", "BST (ns)", "Linear (ns)", "Hash (ns)", "Linear (ns)");
+        System.out.println("===================================================================================================");
         
         for (int n : sizes) {
             CatalogFilterSystem system = new CatalogFilterSystem(n, n);
@@ -26,7 +26,6 @@ public class TestPerformance {
             
             double minPrice = 200.0;
             double maxPrice = 500.0;
-            double targetRating = 4.0;
             String targetId = "ID" + (n / 2); // Search for middle element
             
             ProductArray all = system.getAllProducts();
@@ -34,8 +33,6 @@ public class TestPerformance {
             // Warmup
             system.filterByPrice(minPrice, maxPrice);
             linearFilterPrice(all, minPrice, maxPrice);
-            system.getProductsByRating(targetRating);
-            linearFilterRating(all, targetRating);
             system.searchEngine.getById(targetId);
             linearSearchId(all, targetId);
             
@@ -54,39 +51,25 @@ public class TestPerformance {
                 linearFilterPrice(all, minPrice, maxPrice);
             }
             double avgLinearPriceTime = (System.nanoTime() - startTime2) / (double)iterations;
-            
-            // 3. Measure Rating Filter (Hash)
-            long startTime3 = System.nanoTime();
-            for(int i = 0; i < iterations; i++) {
-                system.getProductsByRating(targetRating);
-            }
-            double avgHashRatingTime = (System.nanoTime() - startTime3) / (double)iterations;
-            
-            // 4. Measure Rating Filter (Linear)
-            long startTime4 = System.nanoTime();
-            for(int i = 0; i < iterations; i++) {
-                linearFilterRating(all, targetRating);
-            }
-            double avgLinearRatingTime = (System.nanoTime() - startTime4) / (double)iterations;
 
-            // 5. Measure ID Search (Hash)
+            // 3. Measure ID Search (Hash)
             long startTime5 = System.nanoTime();
             for(int i = 0; i < iterations; i++) {
                 system.searchEngine.getById(targetId);
             }
             double avgHashIdTime = (System.nanoTime() - startTime5) / (double)iterations;
             
-            // 6. Measure ID Search (Linear)
+            // 4. Measure ID Search (Linear)
             long startTime6 = System.nanoTime();
             for(int i = 0; i < iterations; i++) {
                 linearSearchId(all, targetId);
             }
             double avgLinearIdTime = (System.nanoTime() - startTime6) / (double)iterations;
             
-            System.out.printf("%-10d | %-14.4f | %-13.4f | %-14.4f | %-13.4f | %-14.4f | %-13.4f\n", 
-                n, avgBstTime, avgLinearPriceTime, avgHashRatingTime, avgLinearRatingTime, avgHashIdTime, avgLinearIdTime);
+            System.out.printf("%-10d | %-14.4f | %-13.4f | %-14.4f | %-13.4f\n", 
+                n, avgBstTime, avgLinearPriceTime, avgHashIdTime, avgLinearIdTime);
         }
-        System.out.println("=======================================================================================================================");
+        System.out.println("===================================================================================================");
         
         System.out.println("\n--- Kiểm thử FileUtils (Đọc/Ghi File) ---");
         String testFile = "test_products.csv";
@@ -113,17 +96,6 @@ public class TestPerformance {
         for (int i = 0; i < all.size; i++) {
             Product p = all.data[i];
             if (p.getPrice() >= min && p.getPrice() <= max && p.isActive()) {
-                result.add(p);
-            }
-        }
-        return result;
-    }
-    
-    private static ProductArray linearFilterRating(ProductArray all, double rating) {
-        ProductArray result = new ProductArray();
-        for (int i = 0; i < all.size; i++) {
-            Product p = all.data[i];
-            if (p.getRating() == rating && p.isActive()) {
                 result.add(p);
             }
         }

@@ -64,8 +64,6 @@ public class App {
                     + RESET + "                          " + CYAN + "|");
             System.out.println(CYAN + "| " + YELLOW + "[7]" + RESET + " Tim kiem tu dong (Autocomplete) " + GREEN
                     + "[Array]" + RESET + "                     " + CYAN + "|");
-            System.out.println(CYAN + "| " + YELLOW + "[8]" + RESET + " Loc san pham theo Rating (Exact Match) " + GREEN
-                    + "[BST]" + RESET + "               " + CYAN + "|");
             System.out.println(CYAN + "| " + YELLOW + "[9]" + RESET + " Xem Lich su tim kiem gan day " + GREEN
                     + "[Queue]" + RESET + "                       " + CYAN + "|");
             System.out.println(CYAN + "| " + YELLOW + "[10]" + RESET + " Xem Tong tien Gio hang " + GREEN
@@ -188,21 +186,6 @@ public class App {
                         System.out.print("Nhap tu khoa bat dau (Prefix): ");
                         String prefix = scanner.nextLine();
                         printProductTable(system.autocomplete(prefix));
-                        break;
-                    case "8":
-                        System.out.println(BLUE + "--- LOC THEO RATING ---" + RESET);
-                        System.out.print("Nhap muc Danh gia cu the (Vi du: 5.0, 4.0): ");
-                        String rStr = scanner.nextLine().trim();
-                        if (rStr.isEmpty()) {
-                            System.out.println(RED + "Khong duoc de trong!" + RESET);
-                            break;
-                        }
-                        double ratingMatch = Double.parseDouble(rStr);
-                        if (ratingMatch < 1.0 || ratingMatch > 5.0) {
-                            System.out.println(RED + "Rating phai nam trong khoang tu 1.0 den 5.0!" + RESET);
-                            break;
-                        }
-                        printProductTable(system.getProductsByRating(ratingMatch));
                         break;
                     case "9":
                         System.out.println(BLUE + "--- LICH SU TIM KIEM ---" + RESET);

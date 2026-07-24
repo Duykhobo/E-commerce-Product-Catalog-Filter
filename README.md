@@ -50,10 +50,9 @@ src/
  ┃ ┣ array/ProductArray.java
  ┃ ┣ hash/HashNode.java
  ┃ ┣ linkedlist/CartNode.java
- ┃ ┗ tree/TreeNode.java
+ ┃ ┗ tree/PriceNode.java
  ┣ engine/                     # Các thuật toán xử lý nghiệp vụ chính
  ┃ ┣ PriceEngine.java          # BST
- ┃ ┣ RatingEngine.java         # Hash Table
  ┃ ┣ SearchEngine.java         # Hash Table & Array
  ┃ ┣ SearchHistory.java        # Queue
  ┃ ┗ ShoppingCart.java         # Linked List
