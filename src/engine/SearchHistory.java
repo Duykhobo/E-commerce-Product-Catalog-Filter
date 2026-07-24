@@ -2,50 +2,41 @@ package engine;
 
 public class SearchHistory {
 
-    private String[] queue;
-    private int front;
-    private int rear;
+    private String[] history;
     private int size;
     private int capacity;
 
     public SearchHistory(int capacity) {
         this.capacity = capacity;
-        this.queue = new String[capacity];
-        this.front = 0;
-        this.rear = -1;
+        this.history = new String[capacity];
         this.size = 0;
     }
 
     public void addSearchTerm(String term) {
-        if (term == null || term.isEmpty()) {
+        if (term == null || term.trim().isEmpty()) {
             return;
         }
 
-        if (size == capacity) {
-            front = (front + 1) % capacity;
-            size--;
+        int targetLimit = (size < capacity) ? size : capacity - 1;
+        for (int i = targetLimit; i > 0; i--) {
+            history[i] = history[i - 1];
         }
-
-        rear = (rear + 1) % capacity;
-        queue[rear] = term;
-        size++;
+        history[0] = term;
+        if (size < capacity) {
+            size++;
+        }
     }
 
     public String[] getRecentSearches() {
         String[] result = new String[size];
-        int count = 0;
-        int current = rear;
-
-        while (count < size) {
-            result[count++] = queue[current];
-            current = (current - 1 + capacity) % capacity;
+        for (int i = 0; i < size; i++) {
+            result[i] = history[i];
         }
         return result;
     }
 
     public void clear() {
-        front = 0;
-        rear = -1;
         size = 0;
     }
 }
+

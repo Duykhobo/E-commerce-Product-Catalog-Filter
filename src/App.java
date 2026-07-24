@@ -65,7 +65,7 @@ public class App {
             System.out.println(CYAN + "| " + YELLOW + "[7]" + RESET + " Tim kiem tu dong (Autocomplete) " + GREEN
                     + "[Array]" + RESET + "                     " + CYAN + "|");
             System.out.println(CYAN + "| " + YELLOW + "[9]" + RESET + " Xem Lich su tim kiem gan day " + GREEN
-                    + "[Queue]" + RESET + "                       " + CYAN + "|");
+                    + "[Array]" + RESET + "                       " + CYAN + "|");
             System.out.println(CYAN + "| " + YELLOW + "[10]" + RESET + " Xem Tong tien Gio hang " + GREEN
                     + "[Linked List]" + RESET + "                      " + CYAN + "|");
             System.out.println(CYAN + "| " + YELLOW + "[11]" + RESET + " Them san pham vao Gio hang " + GREEN

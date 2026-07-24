@@ -54,7 +54,7 @@ src/
  ┣ engine/                     # Các thuật toán xử lý nghiệp vụ chính
  ┃ ┣ PriceEngine.java          # BST
  ┃ ┣ SearchEngine.java         # Hash Table & Array
- ┃ ┣ SearchHistory.java        # Queue
+ ┃ ┣ SearchHistory.java        # Array
  ┃ ┗ ShoppingCart.java         # Linked List
  ┣ entity/
  ┃ ┗ Product.java              # Model Đối tượng Sản phẩm
