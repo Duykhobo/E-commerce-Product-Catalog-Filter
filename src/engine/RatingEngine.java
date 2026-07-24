@@ -3,6 +3,7 @@ package engine;
 import datastructure.array.ProductArray;
 import datastructure.hash.HashNode;
 import entity.Product;
+import utils.ValidationUtils;
 
 // Lớp này triển khai cấu trúc Hash Table (Bảng Băm) để lọc sản phẩm theo chính xác mức Rating (Đánh giá)
 public class RatingEngine {
@@ -31,9 +32,8 @@ public class RatingEngine {
 
     // Chèn một sản phẩm vào Bảng băm dựa trên Rating của nó
     public void insertProduct(Product product) {
-        if (product == null) {
-            return;
-        }
+        ValidationUtils.validateNotNull(product, "Sản phẩm không được null");
+        ValidationUtils.validateRating(product.getRating());
         
         double rating = product.getRating(); // Lấy Rating làm Khóa (Key)
         int index = getBucketIndex(rating);  // Tính vị trí Index
@@ -71,6 +71,7 @@ public class RatingEngine {
 
     // Truy xuất mảng sản phẩm theo mức rating (Độ phức tạp O(1) trung bình)
     public ProductArray getProductsByRating(double rating) {
+        ValidationUtils.validateRating(rating);
         // Tính Index nhanh chóng
         int index = getBucketIndex(rating);
         HashNode current = hashTable[index];

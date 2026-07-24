@@ -79,7 +79,13 @@ public class SearchEngine {
         if (product == null) {
             return;
         }
-        // Thêm thẳng vào mảng động ProductArray (O(1) trong đa số trường hợp)
+        for (int i = 0; i < productArray.size; i++) {
+            Product p = productArray.get(i);
+            if (p != null && p.getId().equalsIgnoreCase(product.getId())) {
+                productArray.data[i] = product;
+                return;
+            }
+        }
         productArray.add(product);
     }
 
@@ -126,5 +132,18 @@ public class SearchEngine {
             current = current.getNext();
         }
         return null; // Không tìm thấy
+    }
+
+    // Hàm lấy thông tin sản phẩm kể cả khi đã bị xóa mềm
+    public Product getByIdIncludingInactive(String id) {
+        int index = getBucketIndex(id);
+        HashNode current = hashTable[index];
+        while (current != null) {
+            if (current.getKey().equals(id)) {
+                return (Product) current.getValue();
+            }
+            current = current.getNext();
+        }
+        return null;
     }
 }

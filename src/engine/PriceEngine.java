@@ -3,6 +3,7 @@ package engine;
 import datastructure.array.ProductArray;
 import datastructure.tree.PriceNode;
 import entity.Product;
+import utils.ValidationUtils;
 
 // Cấu trúc Binary Search Tree (BST) quản lý sản phẩm theo giá
 public class PriceEngine {
@@ -26,7 +27,7 @@ public class PriceEngine {
 
     // Chèn Product vào cây BST (O(log N))
     public void insertProduct(Product p) {
-        if (p == null) return;
+        ValidationUtils.validateNotNull(p, "Sản phẩm không được null");
         
         if (root == null) {
             root = new PriceNode(p.getPrice());
@@ -70,6 +71,7 @@ public class PriceEngine {
 
     // Tìm kiếm khoảng giá bằng In-Order Traversal (O(K + log N))
     public void searchByPriceRange(PriceNode node, double min, double max, ProductArray result) {
+        ValidationUtils.validatePriceRange(min, max);
         if (node == null) return;
 
         double currentPrice = node.getPrice();
