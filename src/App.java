@@ -64,19 +64,19 @@ public class App {
                     + RESET + "                          " + CYAN + "|");
             System.out.println(CYAN + "| " + YELLOW + "[7]" + RESET + " Tim kiem tu dong (Autocomplete) " + GREEN
                     + "[Array]" + RESET + "                     " + CYAN + "|");
-            System.out.println(CYAN + "| " + YELLOW + "[9]" + RESET + " Xem Lich su tim kiem gan day " + GREEN
+            System.out.println(CYAN + "| " + YELLOW + "[8]" + RESET + " Xem Lich su tim kiem gan day " + GREEN
                     + "[Array]" + RESET + "                       " + CYAN + "|");
-            System.out.println(CYAN + "| " + YELLOW + "[10]" + RESET + " Xem Tong tien Gio hang " + GREEN
+            System.out.println(CYAN + "| " + YELLOW + "[9]" + RESET + " Xem Tong tien Gio hang " + GREEN
                     + "[Linked List]" + RESET + "                      " + CYAN + "|");
-            System.out.println(CYAN + "| " + YELLOW + "[11]" + RESET + " Them san pham vao Gio hang " + GREEN
+            System.out.println(CYAN + "| " + YELLOW + "[10]" + RESET + " Them san pham vao Gio hang " + GREEN
                     + "[Linked List]" + RESET + "                  " + CYAN + "|");
-            System.out.println(CYAN + "| " + YELLOW + "[12]" + RESET
+            System.out.println(CYAN + "| " + YELLOW + "[11]" + RESET
                     + " Khoi phuc san pham da xoa (Restore)                        " + CYAN + "|");
             System.out.println(CYAN + "| " + RED + "[0]" + RESET
                     + " Thoat chuong trinh                                         " + CYAN + "|");
             System.out.println(
                     CYAN + BOLD + "==================================================================" + RESET);
-            System.out.print(BOLD + "=> Moi ban chon chuc nang (0-12): " + RESET);
+            System.out.print(BOLD + "=> Moi ban chon chuc nang (0-11): " + RESET);
 
             String choice = scanner.nextLine();
             System.out.println();
@@ -187,7 +187,7 @@ public class App {
                         String prefix = scanner.nextLine();
                         printProductTable(system.autocomplete(prefix));
                         break;
-                    case "9":
+                    case "8":
                         System.out.println(BLUE + "--- LICH SU TIM KIEM ---" + RESET);
                         String[] history = system.searchHistory.getRecentSearches();
                         boolean hasHistory = false;
@@ -200,12 +200,12 @@ public class App {
                         if (!hasHistory)
                             System.out.println("Chua co lich su tim kiem nao.");
                         break;
-                    case "10":
+                    case "9":
                         System.out.println(BLUE + "--- THONG TIN GIO HANG ---" + RESET);
                         System.out.println(GREEN + "Tong tien phai thanh toan: " + BOLD
                                 + system.shoppingCart.calculateTotal() + " $" + RESET);
                         break;
-                    case "11":
+                    case "10":
                         System.out.println(BLUE + "--- THEM VAO GIO HANG ---" + RESET);
                         printProductTable(system.getAllProducts());
                         System.out.print("Nhap ID san pham de them vao gio: ");
@@ -220,7 +220,7 @@ public class App {
                         system.shoppingCart.addProduct(p11, qty);
                         System.out.println(GREEN + "Da them " + qty + " san pham vao gio hang thanh cong!" + RESET);
                         break;
-                    case "12":
+                    case "11":
                         System.out.println(BLUE + "--- KHOI PHUC SAN PHAM ---" + RESET);
                         printProductTable(system.getDeletedProducts());
                         System.out.print("Nhap ID san pham can khoi phuc: ");
@@ -238,7 +238,7 @@ public class App {
                         scanner.close();
                         return;
                     default:
-                        System.out.println(RED + "Lua chon khong hop le! Vui long chon tu 0-12." + RESET);
+                        System.out.println(RED + "Lua chon khong hop le! Vui long chon tu 0-11." + RESET);
                 }
             } catch (Exception e) {
                 System.out.println(RED + "Loi nhap lieu! Vui long thu lai." + RESET);
