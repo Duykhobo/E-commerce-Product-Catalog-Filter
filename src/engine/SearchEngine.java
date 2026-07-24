@@ -102,7 +102,7 @@ public class SearchEngine {
 
         while (current != null) {
             if (current.getKey().equals(id)) {
-                Product p = (Product) current.getValue();
+                Product p = current.getValue();
                 if (p.isActive()) {
                     return p;
                 }
@@ -117,7 +117,7 @@ public class SearchEngine {
         HashNode current = hashTable[index];
         while (current != null) {
             if (current.getKey().equals(id)) {
-                return (Product) current.getValue();
+                return current.getValue();
             }
             current = current.getNext();
         }
