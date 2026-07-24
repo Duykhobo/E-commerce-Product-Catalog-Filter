@@ -1,29 +1,57 @@
 package engine;
 
 import datastructure.array.ProductArray;
-import datastructure.hash.HashNode;
+import datastructure.tree.TreeNode;
 import entity.Product;
 import utils.ValidationUtils;
 
 public class RatingEngine {
 
-    public HashNode[] hashTable;
-    public int capacity;
+    public TreeNode root;
+    private int size;
 
-    public RatingEngine(int capacity) {
-        this.capacity = capacity;
-        this.hashTable = new HashNode[capacity];
-    }
+    public static class RatingBucket {
+        private double rating;
+        private ProductArray products;
 
-    private int getBucketIndex(double rating) {
-        int hashCode = Double.valueOf(rating).hashCode();
-
-        int absHashCode = Math.abs(hashCode);
-        if (absHashCode < 0) {
-            absHashCode = Integer.MAX_VALUE;
+        public RatingBucket(double rating) {
+            this.rating = rating;
+            this.products = new ProductArray();
         }
 
-        return absHashCode % capacity;
+        public double getRating() {
+            return rating;
+        }
+
+        public ProductArray getProducts() {
+            return products;
+        }
+
+        public void addProduct(Product p) {
+            if (p != null) {
+                products.add(p);
+            }
+        }
+    }
+
+    public RatingEngine() {
+        this.root = null;
+        this.size = 0;
+    }
+
+    public RatingEngine(int capacity) {
+        this();
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    private int compare(double r1, double r2) {
+        if (Math.abs(r1 - r2) < 1e-9) {
+            return 0;
+        }
+        return r1 < r2 ? -1 : 1;
     }
 
     public void insertProduct(Product product) {
@@ -31,41 +59,73 @@ public class RatingEngine {
         ValidationUtils.validateRating(product.getRating());
 
         double rating = product.getRating();
-        int index = getBucketIndex(rating);
 
-        HashNode current = hashTable[index];
-
-        // BƯỚC 1: KIỂM TRA ĐỤNG ĐỘ & TÌM KIẾM
-        while (current != null) {
-            if (current.getKey().equals(rating)) {
-                // TRƯỜNG HỢP 1: Đã tồn tại mức rating này!
-                ((ProductArray) current.getValue()).add(product);
-                return;
-            }
-            current = current.getNext();
+        if (root == null) {
+            RatingBucket bucket = new RatingBucket(rating);
+            bucket.addProduct(product);
+            root = new TreeNode(bucket);
+            size++;
+            return;
         }
 
-        // BƯỚC 2: CHƯA TỒN TẠI MỨC RATING NÀY
-        ProductArray newArray = new ProductArray();
-        newArray.add(product); // Bỏ sản phẩm đầu tiên vào
+        TreeNode current = root;
+        TreeNode parent = null;
+        int cmp = 0;
 
-        HashNode newNode = new HashNode(rating, newArray);
+        while (current != null) {
+            parent = current;
+            RatingBucket currentBucket = (RatingBucket) current.getData();
+            cmp = compare(rating, currentBucket.getRating());
 
-        newNode.setNext(hashTable[index]);
-        hashTable[index] = newNode;
+            if (cmp == 0) {
+                currentBucket.addProduct(product);
+                size++;
+                return;
+            } else if (cmp < 0) {
+                current = current.getLeft();
+            } else {
+                current = current.getRight();
+            }
+        }
+
+        RatingBucket newBucket = new RatingBucket(rating);
+        newBucket.addProduct(product);
+        TreeNode newNode = new TreeNode(newBucket);
+
+        if (cmp < 0) {
+            parent.setLeft(newNode);
+        } else {
+            parent.setRight(newNode);
+        }
+        size++;
     }
 
     public ProductArray getProductsByRating(double rating) {
         ValidationUtils.validateRating(rating);
-        int index = getBucketIndex(rating);
-        HashNode current = hashTable[index];
+        TreeNode current = root;
 
         while (current != null) {
-            if (current.getKey().equals(rating)) {
-                return (ProductArray) current.getValue();
+            RatingBucket bucket = (RatingBucket) current.getData();
+            int cmp = compare(rating, bucket.getRating());
+
+            if (cmp == 0) {
+                ProductArray filtered = new ProductArray();
+                ProductArray products = bucket.getProducts();
+                for (int i = 0; i < products.size; i++) {
+                    Product p = products.get(i);
+                    if (p != null && p.isActive()) {
+                        filtered.add(p);
+                    }
+                }
+                return filtered;
+            } else if (cmp < 0) {
+                current = current.getLeft();
+            } else {
+                current = current.getRight();
             }
-            current = current.getNext();
         }
+
         return new ProductArray();
     }
 }
+

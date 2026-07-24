@@ -65,7 +65,7 @@ public class App {
             System.out.println(CYAN + "| " + YELLOW + "[7]" + RESET + " Tim kiem tu dong (Autocomplete) " + GREEN
                     + "[Array]" + RESET + "                     " + CYAN + "|");
             System.out.println(CYAN + "| " + YELLOW + "[8]" + RESET + " Loc san pham theo Rating (Exact Match) " + GREEN
-                    + "[Hash Table]" + RESET + "        " + CYAN + "|");
+                    + "[BST]" + RESET + "               " + CYAN + "|");
             System.out.println(CYAN + "| " + YELLOW + "[9]" + RESET + " Xem Lich su tim kiem gan day " + GREEN
                     + "[Queue]" + RESET + "                       " + CYAN + "|");
             System.out.println(CYAN + "| " + YELLOW + "[10]" + RESET + " Xem Tong tien Gio hang " + GREEN

@@ -11,8 +11,8 @@ public class TestPerformance {
         int[] sizes = {100, 1000, 10000, 50000};
         
         System.out.println("=======================================================================================================================");
-        System.out.printf("%-10s | %-30s | %-30s | %-30s\n", "Size (n)", "Price Filter (BST vs Linear)", "Rating Filter (Hash vs Linear)", "ID Search (Hash vs Linear)");
-        System.out.printf("%-10s | %-14s | %-13s | %-14s | %-13s | %-14s | %-13s\n", "", "BST (ns)", "Linear (ns)", "Hash (ns)", "Linear (ns)", "Hash (ns)", "Linear (ns)");
+        System.out.printf("%-10s | %-30s | %-30s | %-30s\n", "Size (n)", "Price Filter (BST vs Linear)", "Rating Filter (BST vs Linear)", "ID Search (Hash vs Linear)");
+        System.out.printf("%-10s | %-14s | %-13s | %-14s | %-13s | %-14s | %-13s\n", "", "BST (ns)", "Linear (ns)", "BST (ns)", "Linear (ns)", "Hash (ns)", "Linear (ns)");
         System.out.println("=======================================================================================================================");
         
         for (int n : sizes) {
