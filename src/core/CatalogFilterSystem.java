@@ -56,6 +56,17 @@ public class CatalogFilterSystem {
         return result;
     }
 
+    public ProductArray getDeletedProducts() {
+        ProductArray result = new ProductArray();
+        for (int i = 0; i < searchEngine.productArray.size; i++) {
+            Product p = searchEngine.productArray.get(i);
+            if (p != null && !p.isActive()) {
+                result.add(p);
+            }
+        }
+        return result;
+    }
+
     public boolean updateProduct(String id, String newName, double newPrice, double newRating) {
         Product oldProduct = searchEngine.getById(id);
         if (oldProduct == null) {
@@ -71,6 +82,15 @@ public class CatalogFilterSystem {
         Product p = searchEngine.getById(id);
         if (p != null) {
             p.setActive(false);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean restoreProduct(String id) {
+        Product p = searchEngine.getByIdIncludingInactive(id);
+        if (p != null && !p.isActive()) {
+            p.setActive(true);
             return true;
         }
         return false;

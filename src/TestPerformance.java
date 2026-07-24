@@ -1,6 +1,10 @@
 import core.CatalogFilterSystem;
 import entity.Product;
 import datastructure.array.ProductArray;
+import utils.FileUtils;
+import java.util.List;
+import java.util.ArrayList;
+import java.io.File;
 
 public class TestPerformance {
     public static void main(String[] args) {
@@ -83,6 +87,25 @@ public class TestPerformance {
                 n, avgBstTime, avgLinearPriceTime, avgHashRatingTime, avgLinearRatingTime, avgHashIdTime, avgLinearIdTime);
         }
         System.out.println("=======================================================================================================================");
+        
+        System.out.println("\n--- Kiểm thử FileUtils (Đọc/Ghi File) ---");
+        String testFile = "test_products.csv";
+        List<Product> productsToSave = new ArrayList<>();
+        for (int i = 0; i < 5000; i++) {
+            productsToSave.add(new Product("FILE_ID" + i, "File Product " + i, Math.random() * 1000, 4.0));
+        }
+        
+        long t1 = System.nanoTime();
+        FileUtils.writeProductsToFile(testFile, productsToSave);
+        long t2 = System.nanoTime();
+        System.out.println("Thời gian ghi 5000 sản phẩm: " + (t2 - t1) / 1_000_000.0 + " ms");
+        
+        long t3 = System.nanoTime();
+        List<Product> loadedProducts = FileUtils.readProductsFromFile(testFile);
+        long t4 = System.nanoTime();
+        System.out.println("Thời gian đọc 5000 sản phẩm: " + (t4 - t3) / 1_000_000.0 + " ms. Số lượng đã đọc: " + loadedProducts.size());
+        
+        new File(testFile).delete(); // Dọn dẹp file test
     }
     
     private static ProductArray linearFilterPrice(ProductArray all, double min, double max) {
