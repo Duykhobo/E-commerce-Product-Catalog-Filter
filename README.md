@@ -13,7 +13,7 @@ Một hệ thống quản lý danh mục sản phẩm và lõi tìm kiếm (Back
 - **Tìm kiếm Tiền tố (Autocomplete):** Hỗ trợ gõ vài ký tự đầu để gợi ý tên sản phẩm, giống thanh tìm kiếm Google.
 - **Lọc Khoảng Giá (Price Filter):** Sử dụng Cây nhị phân (*Binary Search Tree*) để thu hẹp khoảng giá sản phẩm một cách thông minh.
 - **Giỏ Hàng (Shopping Cart):** Quản lý Session bằng *Linked List*.
-- **Lịch sử tìm kiếm:** Ghi nhớ 5 từ khóa tìm kiếm gần nhất bằng *Circular Queue*.
+- **Lịch sử tìm kiếm:** Ghi nhớ 5 từ khóa tìm kiếm gần nhất bằng *Mảng cố định (Fixed-size Array)*.
 - **Giao diện Terminal UX cao:** Danh sách dữ liệu bọc trong Bảng ASCII đẹp mắt, có hệ thống Phân trang (Pagination) thông minh chống trôi màn hình, đi kèm cơ chế bắt lỗi Validation chống sập chương trình.
 
 ---
@@ -23,7 +23,7 @@ Một hệ thống quản lý danh mục sản phẩm và lõi tìm kiếm (Back
 Sức mạnh của dự án nằm ở việc mỗi tính năng đều được gắn cho một cấu trúc dữ liệu sinh ra dành riêng cho nó:
 
 1. **Hash Table (Bảng Băm):** 
-   - Ứng dụng: Tìm kiếm bằng ID (SearchEngine) & Lọc theo Rating (RatingEngine).
+   - Ứng dụng: Tìm kiếm bằng ID (SearchEngine).
    - Độ phức tạp: *O(1)*.
 2. **Binary Search Tree (Cây Nhị Phân Tìm Kiếm):**
    - Ứng dụng: Lọc sản phẩm nằm trong khoảng Giá `[min, max]`. Tự động cắt tỉa (Pruning) các nhánh vượt ngoài điều kiện.
@@ -33,10 +33,9 @@ Sức mạnh của dự án nằm ở việc mỗi tính năng đều được g
    - Độ phức tạp: *O(N)*.
 4. **Singly Linked List (Danh sách liên kết đơn):**
    - Ứng dụng: Giỏ hàng (Shopping Cart), tự do co giãn số lượng mua.
-5. **Circular Queue (Hàng đợi vòng):**
-   - Ứng dụng: Lưu Lịch sử 5 từ khóa tìm kiếm gần nhất. Đảm bảo dung lượng RAM luôn là hằng số.
+5. **Fixed-size Array (Mảng cố định):**
+   - Ứng dụng: Lưu Lịch sử 5 từ khóa tìm kiếm gần nhất bằng cơ chế dịch chuyển. Đảm bảo dung lượng RAM luôn là hằng số.
 
-*(Xem chi tiết phân tích thuật toán tại file `DATA_STRUCTURES.md`)*
 
 ---
 
