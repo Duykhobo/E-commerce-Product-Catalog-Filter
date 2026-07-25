@@ -3,11 +3,12 @@ package engine;
 import datastructure.array.ProductArray;
 import datastructure.tree.PriceNode;
 import entity.Product;
+import utils.ValidationUtils;
 
-// Cấu trúc Binary Search Tree (BST) quản lý sản phẩm theo giá
 public class PriceEngine {
-    public PriceNode root; // Node gốc
-    private int size;      // Tổng số lượng sản phẩm
+
+    public PriceNode root;
+    private int size;
 
     public PriceEngine() {
         this.root = null;
@@ -18,16 +19,16 @@ public class PriceEngine {
         return size == 0;
     }
 
-    // Hàm so sánh an toàn cho kiểu double (tránh sai số IEEE 754)
     private int compare(double p1, double p2) {
-        if (Math.abs(p1 - p2) < 1e-9) return 0; // Trùng giá
-        return p1 < p2 ? -1 : 1;                // Nhỏ hơn hoặc Lớn hơn
+        if (Math.abs(p1 - p2) < 1e-9) {
+            return 0;
+        }
+        return p1 < p2 ? -1 : 1;
     }
 
-    // Chèn Product vào cây BST (O(log N))
     public void insertProduct(Product p) {
-        if (p == null) return;
-        
+        ValidationUtils.validateNotNull(p, "Sản phẩm không được null");
+
         if (root == null) {
             root = new PriceNode(p.getPrice());
             root.addProduct(p);
@@ -37,29 +38,26 @@ public class PriceEngine {
 
         PriceNode current = root;
         PriceNode parent = null;
-        int cmp = 0; // Biến lưu kết quả so sánh
-        
-        // Duyệt tìm vị trí chèn
+        int cmp = 0;
+
         while (current != null) {
             parent = current;
             cmp = compare(p.getPrice(), current.getPrice());
-            
+
             if (cmp == 0) {
-                current.addProduct(p); // Giá trùng khớp
+                current.addProduct(p);
                 size++;
                 return;
             } else if (cmp < 0) {
-                current = current.getLeft();  // Sang trái
+                current = current.getLeft();
             } else {
-                current = current.getRight(); // Sang phải
+                current = current.getRight();
             }
         }
 
-        // Tạo Node mới tại vị trí lá
         PriceNode newNode = new PriceNode(p.getPrice());
         newNode.addProduct(p);
-        
-        // Liên kết với Node cha (Dựa vào kết quả so sánh cuối cùng)
+
         if (cmp < 0) {
             parent.setLeft(newNode);
         } else {
@@ -68,9 +66,11 @@ public class PriceEngine {
         size++;
     }
 
-    // Tìm kiếm khoảng giá bằng In-Order Traversal (O(K + log N))
     public void searchByPriceRange(PriceNode node, double min, double max, ProductArray result) {
-        if (node == null) return;
+        ValidationUtils.validatePriceRange(min, max);
+        if (node == null) {
+            return;
+        }
 
         double currentPrice = node.getPrice();
 

@@ -1,29 +1,31 @@
 package datastructure.hash;
 
+import entity.Product;
+
 public class HashNode {
-    private Object key;
-    private Object value;
+    private String key;
+    private Product value;
     private HashNode next;
 
-    public HashNode(Object key, Object value) {
+    public HashNode(String key, Product value) {
         this.key = key;
         this.value = value;
         this.next = null;
     }
 
-    public Object getKey() {
+    public String getKey() {
         return key;
     }
 
-    public void setKey(Object key) {
+    public void setKey(String key) {
         this.key = key;
     }
 
-    public Object getValue() {
+    public Product getValue() {
         return value;
     }
 
-    public void setValue(Object value) {
+    public void setValue(Product value) {
         this.value = value;
     }
 

@@ -1,5 +1,7 @@
 package entity;
 
+import utils.ValidationUtils;
+
 public class Product {
     private String id;
     private String name;
@@ -8,6 +10,11 @@ public class Product {
     private boolean isActive;
 
     public Product(String id, String name, double price, double rating) {
+        ValidationUtils.validateStringNotEmpty(id, "ID sản phẩm không hợp lệ");
+        ValidationUtils.validateStringNotEmpty(name, "Tên sản phẩm không hợp lệ");
+        ValidationUtils.validatePositiveOrZero(price, "Giá sản phẩm không được âm");
+        ValidationUtils.validateRating(rating);
+        
         this.id = id;
         this.name = name;
         this.price = price;

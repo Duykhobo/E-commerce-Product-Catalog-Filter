@@ -3,10 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ThanhDuy/Documents/02_Study_Active/FPT/SEMSTER_4_SUMMER26/CSD/Ecommerce_Product_Catalog_Filter/src/datastructure/tree/TreeNode.java</file>
-            <file>file:/C:/Users/ThanhDuy/Documents/02_Study_Active/FPT/SEMSTER_4_SUMMER26/CSD/Ecommerce_Product_Catalog_Filter/src/engine/PriceEngine.java</file>
-            <file>file:/C:/Users/ThanhDuy/Documents/02_Study_Active/FPT/SEMSTER_4_SUMMER26/CSD/Ecommerce_Product_Catalog_Filter/src/App.java</file>
             <file>file:/C:/Users/ThanhDuy/Documents/02_Study_Active/FPT/SEMSTER_4_SUMMER26/CSD/Ecommerce_Product_Catalog_Filter/src/engine/SearchEngine.java</file>
+            <file>file:/C:/Users/ThanhDuy/Documents/02_Study_Active/FPT/SEMSTER_4_SUMMER26/CSD/Ecommerce_Product_Catalog_Filter/src/datastructure/tree/PriceNode.java</file>
+            <file>file:/C:/Users/ThanhDuy/Documents/02_Study_Active/FPT/SEMSTER_4_SUMMER26/CSD/Ecommerce_Product_Catalog_Filter/src/datastructure/hash/HashNode.java</file>
+            <file>file:/C:/Users/ThanhDuy/Documents/02_Study_Active/FPT/SEMSTER_4_SUMMER26/CSD/Ecommerce_Product_Catalog_Filter/src/engine/PriceEngine.java</file>
+            <file>file:/C:/Users/ThanhDuy/Documents/02_Study_Active/FPT/SEMSTER_4_SUMMER26/CSD/Ecommerce_Product_Catalog_Filter/src/utils/ValidationUtils.java</file>
+            <file>file:/C:/Users/ThanhDuy/Documents/02_Study_Active/FPT/SEMSTER_4_SUMMER26/CSD/Ecommerce_Product_Catalog_Filter/src/engine/SearchHistory.java</file>
+            <file>file:/C:/Users/ThanhDuy/Documents/02_Study_Active/FPT/SEMSTER_4_SUMMER26/CSD/Ecommerce_Product_Catalog_Filter/src/engine/ShoppingCart.java</file>
+            <file>file:/C:/Users/ThanhDuy/Documents/02_Study_Active/FPT/SEMSTER_4_SUMMER26/CSD/Ecommerce_Product_Catalog_Filter/src/entity/Product.java</file>
+            <file>file:/C:/Users/ThanhDuy/Documents/02_Study_Active/FPT/SEMSTER_4_SUMMER26/CSD/Ecommerce_Product_Catalog_Filter/src/core/CatalogFilterSystem.java</file>
+            <file>file:/C:/Users/ThanhDuy/Documents/02_Study_Active/FPT/SEMSTER_4_SUMMER26/CSD/Ecommerce_Product_Catalog_Filter/src/utils/FileUtils.java</file>
         </group>
     </open-files>
 </project-private>
